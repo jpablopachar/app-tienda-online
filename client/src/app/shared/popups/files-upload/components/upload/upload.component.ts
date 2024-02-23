@@ -44,7 +44,6 @@ import { FileSizePipe } from '../../pipes'
         display: flex;
         justify-content: space-between;
       }
-
     }
 
     .button {

@@ -1,0 +1,69 @@
+<div class="files-upload">
+    <div class="files-upload__header">
+        <h3>Files uploading</h3>
+    </div>
+    <div class="files-upload__content">
+        @if (!files().length) {
+            <div
+                class="dropzone"
+                appDropZone
+                (hovered)="toggleHover($event)"
+                [class.dropzone__hovered]="isHovering"
+                (dropped)="onDrop($event)"
+            >
+                <div class="dropzone__label">Deja tus archivos aquí</div>
+                <div class="dropzone__file">
+                    <label class="file">
+                        <input
+                            class="file__input"
+                            [multiple]="data.multiple"
+                            type="file"
+                            (change)="onDropFile($event)"
+                        />
+                        <span class="file__label">seleccionar</span>
+                    </label>
+                </div>
+            </div>
+            @if (isError()) {
+                <div class="error">Seleccione un archivo</div>
+            }
+        }
+
+        @if (imageFile()) {
+            <app-cropper
+                [imageFile]="imageFile()"
+                (changed)="onCrop($event)"
+            ></app-cropper>
+        }
+
+        @if (files()) {
+            @for (file of files(); track file.name) {
+                <app-upload
+                    [file]="file"
+                    (completed)="onUploadComplete($event)"
+                ></app-upload>
+            }
+        }
+    </div>
+    @if (!imageFile()) {
+        <div class="files-upload__footer">
+            @if (!filesUrls().length) {
+                <button
+                    class="app-button"
+                    (click)="onClose()"
+                >
+                    Cerrar
+                </button>
+            }
+
+            @if (filesUrls().length) {
+                <button
+                    class="app-button"
+                    (click)="onComplete()"
+                >
+                    Completado
+                </button>
+            }
+        </div>
+    }
+</div>

@@ -32,7 +32,7 @@ import { dataURLtoFile } from '../../utils'
   `,
 })
 export class CropperComponent {
-  @Input() imageFile!: File;
+  @Input() imageFile!: File | null;
 
   @Output() changed: EventEmitter<File>;
 
