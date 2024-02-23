@@ -1,1 +1,40 @@
-
+<div class="upload">
+    {{ file.name }}
+    <progress
+        class="upload__progress"
+        [value]="(percentage$ | async) || 0"
+    ></progress>
+    @if (snapshot$ | async; as snapshot) {
+        <div class="upload__info">
+            {{ snapshot.bytesTransferred | appFileSize }} of
+            {{ snapshot.totalBytes | appFileSize }}
+        </div>
+        @if (downloadURL) {
+            <a class="app-a" [href]="downloadURL" target="_blank" rel="noopener"
+                >Descargar</a
+            >
+        } @else {
+            <button
+                (click)="task.pause()"
+                class="button"
+                [disabled]="!(snapshot?.state === 'running')"
+            >
+                Pausa
+            </button>
+            <button
+                (click)="task.cancel()"
+                class="button"
+                [disabled]="!(snapshot?.state === 'running')"
+            >
+                Cancelar
+            </button>
+            <button
+                (click)="task.resume()"
+                class="button"
+                [disabled]="!(snapshot?.state === 'paused')"
+            >
+                Continuar
+            </button>
+        }
+    }
+</div>
