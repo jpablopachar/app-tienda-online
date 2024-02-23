@@ -61,21 +61,21 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   private propagateChange: any = () => {};
 
-  writeValue(value: Value[]): void {
+  public writeValue(value: Value[]): void {
     this.value.set(value);
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.propagateChange = fn;
   }
 
-  registerOnTouched(): void {}
+  public registerOnTouched(): void {}
 
-  setDisabledState(isDisabled: boolean): void {
+  public setDisabledState(isDisabled: boolean): void {
     this.isDisabled.set(isDisabled);
   }
 
-  onChanged(value: Value, checked: Event): void {
+  public onChanged(value: Value, checked: Event): void {
     const { target } = checked;
     const resultado: boolean = (target as HTMLInputElement).checked;
 
@@ -104,7 +104,7 @@ export class CheckboxComponent implements ControlValueAccessor {
     return selected.length ? selected : [];
   }
 
-  isChecked(value: Value): boolean {
+  public isChecked(value: Value): boolean {
     return this.value() && this.value().includes(value);
   }
 }
