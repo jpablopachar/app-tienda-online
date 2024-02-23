@@ -1,7 +1,22 @@
 import { CommonModule } from '@angular/common'
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core'
-import { Storage, StorageReference, UploadTask, UploadTaskSnapshot, ref, uploadBytesResumable } from '@angular/fire/storage'
-import { Observable, Subject } from 'rxjs'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  WritableSignal,
+  inject,
+} from '@angular/core'
+import {
+  AngularFireStorage,
+  AngularFireStorageReference,
+  AngularFireUploadTask,
+} from '@angular/fire/compat/storage'
+import { UploadTaskSnapshot } from '@angular/fire/storage'
+import { Observable, Subject, finalize, lastValueFrom, takeUntil } from 'rxjs'
 import { FileSizePipe } from '../../pipes'
 
 @Component({
@@ -38,26 +53,27 @@ import { FileSizePipe } from '../../pipes'
     }
 
     .app-a { margin-right: 0; }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadComponent implements OnInit, OnDestroy {
   @Input() file!: File;
 
   @Output() completed: EventEmitter<string>;
 
-  private _storage: Storage;
+  private _storage: AngularFireStorage;
   private _destroy;
 
-  public task!: UploadTask;
+  public task!: AngularFireUploadTask;
   public percentage$!: Observable<number | undefined>;
   public snapshot$!: Observable<UploadTaskSnapshot | undefined>;
-  public downloadURL!: string;
+  public downloadURL!: WritableSignal<string>;
 
   constructor() {
     this.completed = new EventEmitter<string>();
     this._destroy = new Subject<void>();
 
-    this._storage = inject(Storage);
+    this._storage = inject(AngularFireStorage);
   }
 
   ngOnInit(): void {
@@ -70,10 +86,29 @@ export class UploadComponent implements OnInit, OnDestroy {
   }
 
   private _startUpload(): void {
-    const path = `${this.file.type.split('/')[0]}/${Date.now()}_${this.file.name}`;
-    const storageRef: StorageReference = ref(this._storage, path);
+    const path = `${this.file.type.split('/')[0]}/${Date.now()}_${
+      this.file.name
+    }`;
+    const storageRef: AngularFireStorageReference = this._storage.ref(path);
 
-    this.task = uploadBytesResumable(storageRef, this.file);
-    // this.percentage$ = this.task.snapshot.
+    this.task = this._storage.upload(path, this.file);
+    this.percentage$ = this.task.percentageChanges();
+    this.snapshot$ = this.task.snapshotChanges() as Observable<
+      UploadTaskSnapshot | undefined
+    >;
+
+    this.snapshot$
+      .pipe(
+        takeUntil(this._destroy),
+        finalize(async (): Promise<void> => {
+          const storageRefObservable$: Observable<any> =
+            storageRef.getDownloadURL();
+
+          this.downloadURL.set(await lastValueFrom(storageRefObservable$));
+
+          this.completed.emit(this.downloadURL());
+        })
+      )
+      .subscribe();
   }
 }

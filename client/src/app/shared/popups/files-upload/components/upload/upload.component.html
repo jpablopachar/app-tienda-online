@@ -9,7 +9,7 @@
             {{ snapshot.bytesTransferred | appFileSize }} of
             {{ snapshot.totalBytes | appFileSize }}
         </div>
-        @if (downloadURL) {
+        @if (downloadURL()) {
             <a class="app-a" [href]="downloadURL" target="_blank" rel="noopener"
                 >Descargar</a
             >
