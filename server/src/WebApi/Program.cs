@@ -1,4 +1,15 @@
+using BusinessLogic.Data;
+using BusinessLogic.Logic;
+using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<MarketDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection")));
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,29 +27,32 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+using (var environment = app.Services.CreateScope())
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var services = environment.ServiceProvider;
+    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    try
+    {
+        var context = services.GetRequiredService<MarketDbContext>();
+
+        await context.Database.MigrateAsync();
+
+        await MarketDbContextData.LoadDataAsync(context, loggerFactory);
+
+        /* var userManager = services.GetRequiredService<UserManager<User>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var identityContext = services.GetRequiredService<AuthDbContext>(); */
+
+        // await identityContext.Database.MigrateAsync();
+        // await AuthDbContextData.SeedUserAsync(userManager, roleManager);
+    }
+    catch (Exception exception)
+    {
+        var logger = loggerFactory.CreateLogger<Program>();
+
+        logger.LogError(exception, "Se produjo un error al realizar la migración de la base de datos.");
+    }
+}
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
