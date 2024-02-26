@@ -1,7 +1,10 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications.Products;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Dtos;
+using WebApi.Errors;
 
 namespace WebApi.Controllers
 {
@@ -11,17 +14,39 @@ namespace WebApi.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<PaginationDto<Product>>> GetProducts([FromQuery] ProductSpecificationParams productParams)
         {
-            var products = await _productRepository.GetAllAsync();
+            var specification = new ProductWithCategoryAndBrandSpecification(productParams);
 
-            return Ok(products);
+            var products = await _productRepository.GetAllWithSpec(specification);
+
+            var countSpecification = new ProductForCountingSpecification(productParams);
+
+            var totalProducts = await _productRepository.CountAsync(countSpecification);
+
+            var rounded = Math.Ceiling((double)totalProducts / productParams.PageSize);
+            var totalPages = Convert.ToInt32(rounded);
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
+
+            return Ok(new PaginationDto<ProductDto>
+            {
+                Count = totalProducts,
+                Data = data,
+                PageCount = totalPages,
+                PageIndex = productParams.PageIndex,
+                PageSize = productParams.PageSize
+            });
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product?>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
-            return await _productRepository.GetByIdAsync(id);
+            var specification = new ProductWithCategoryAndBrandSpecification(id);
+            var product = await _productRepository.GetByIdWithSpec(specification);
+
+            if (product == null) return NotFound(new CodeErrorResponse(404, "El producto no existe"));
+
+            return _mapper.Map<Product, ProductDto>(product);
         }
     }
 }

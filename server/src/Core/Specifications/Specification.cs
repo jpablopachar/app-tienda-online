@@ -13,16 +13,16 @@ namespace Core.Specifications
 
         public Expression<Func<TEntity, bool>> Criteria { get; }
 
-        public List<Expression<Func<TEntity, object>>> Includes { get; } = new List<Expression<Func<TEntity, object>>>();
+        public List<Expression<Func<TEntity, object>>> Includes { get; } = [];
 
         protected void AddInclude(Expression<Func<TEntity, object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
 
-        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+        public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
 
-        public Expression<Func<TEntity, object>> OrderByDescending { get; private set; }
+        public Expression<Func<TEntity, object>>? OrderByDescending { get; private set; }
 
         protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
         {

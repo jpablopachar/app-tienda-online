@@ -8,9 +8,9 @@ namespace Core.Specifications
 
         List<Expression<Func<TEntity, object>>> Includes { get; }
 
-        Expression<Func<TEntity, object>> OrderBy { get; }
+        Expression<Func<TEntity, object>>? OrderBy { get; }
 
-        Expression<Func<TEntity, object>> OrderByDescending { get; }
+        Expression<Func<TEntity, object>>? OrderByDescending { get; }
 
         int Take { get; }
 

@@ -1,7 +1,10 @@
+using AutoMapper;
 using BusinessLogic.Data;
 using BusinessLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Dtos;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,22 @@ builder.Services.AddDbContext<MarketDbContext>(options => options.UseSqlServer(b
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfiles()));
+
+IMapper mapper = mapperConfig.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+// Add services to the container.
+// builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
+builder.Services.AddControllers();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,7 +43,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
+
+// app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
+
+app.MapControllers();
 
 using (var environment = app.Services.CreateScope())
 {
