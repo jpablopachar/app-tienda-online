@@ -2,6 +2,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dtos;
 using WebApi.Errors;
@@ -47,6 +48,28 @@ namespace WebApi.Controllers
             if (product == null) return NotFound(new CodeErrorResponse(404, "El producto no existe"));
 
             return _mapper.Map<Product, ProductDto>(product);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        public async Task<ActionResult<Product>> AddProduct(Product product) {
+            var result = await _productRepository.AddAsync(product);
+
+            if (result == 0) throw new Exception("No se pudo agregar el producto");
+
+            return Ok(product);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product) {
+            product.Id = id;
+
+            var result = await _productRepository.UpdateAsync(product);
+
+            if (result == 0) throw new Exception("No se pudo actualizar el producto");
+
+            return Ok(product);
         }
     }
 }
