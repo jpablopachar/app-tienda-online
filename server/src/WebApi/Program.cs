@@ -29,6 +29,8 @@ builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(option => option.AddPolicy("CorsRule", rule => rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*")));
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -48,6 +50,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
+
+app.UseCors("CorsRule");
 
 app.MapControllers();
 
