@@ -57,7 +57,7 @@ export interface Placeholder {
     </div>
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
 
 .date-range {
   &__items {

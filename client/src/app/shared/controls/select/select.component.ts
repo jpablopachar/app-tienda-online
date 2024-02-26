@@ -33,7 +33,7 @@ import { ControlItem, Value } from '@app/models/client'
     </div>
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
 
     .select {
       line-height: 36px;

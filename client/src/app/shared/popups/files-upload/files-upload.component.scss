@@ -1,4 +1,4 @@
-@import "styles/colors";
+@import "styles/colors.scss";
 
 .files-upload {
     display: flex;
@@ -44,16 +44,17 @@
     }
 
     &__label {
-        color: $primary;
+        /* color: $primary; */
+
         &:hover {
-            color: $primary-dark;
+            /* color: $primary-dark; */
             cursor: pointer;
         }
     }
 }
 
 .error {
-    color: $error;
+    /* color: $error; */
     text-align: center;
     padding: 12px;
 }

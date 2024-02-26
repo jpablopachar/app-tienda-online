@@ -31,7 +31,7 @@ export class FilesUploadComponent {
   public isHovering?: WritableSignal<boolean>;
   public files: WritableSignal<File[]> = signal([]);
   public filesUrls: WritableSignal<string[]> = signal([]);
-  public imageFile!: WritableSignal<File | null>;
+  public imageFile!: WritableSignal<File | undefined>;
   public isError!: WritableSignal<boolean>;
 
   private _dialogRef: MatDialogRef<FilesUploadComponent>;
@@ -69,7 +69,7 @@ export class FilesUploadComponent {
   }
 
   onCrop(file: File): void {
-    this.imageFile.set(null);
+    this.imageFile.set(undefined);
 
     this.files.update((files: File[]): File[] => [...files, file]);
   }

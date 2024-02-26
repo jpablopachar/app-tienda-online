@@ -25,7 +25,7 @@ import { FileSizePipe } from '../../pipes'
   imports: [CommonModule, FileSizePipe],
   templateUrl: './upload.component.html',
   styles: `
-    @import 'styles/colors';
+    @import "styles/colors.scss";
 
     .upload {
       padding: 12px;

@@ -61,7 +61,7 @@ import { HighlightPipe } from './pipes/highlight.pipe'
     </div>
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
 
     .autocomplete {
       position: relative;

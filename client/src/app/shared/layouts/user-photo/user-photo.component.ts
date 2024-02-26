@@ -10,7 +10,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
     <div class="photo" [style.backgroundImage]="safePhotoURL"></div>
   `,
   styles: `
-    @import 'styles/colors';
+    @import "styles/colors.scss";
 
     .photo {
       width: 80px;

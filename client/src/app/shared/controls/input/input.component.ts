@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
     />
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
 
     :host-context(.form-field_error) {
       input {

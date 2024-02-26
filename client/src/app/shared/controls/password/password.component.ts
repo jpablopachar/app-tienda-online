@@ -35,7 +35,7 @@ type PasswordType = 'password' | 'text';
     </div>
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
     .password {
       display: flex;
 

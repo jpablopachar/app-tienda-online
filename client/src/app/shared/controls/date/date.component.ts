@@ -40,7 +40,7 @@ import { Value } from '@app/models/client'
     </div>
   `,
   styles: `
-    @import "styles/colors";
+    @import "styles/colors.scss";
 
     .date {
       display: inline-flex;

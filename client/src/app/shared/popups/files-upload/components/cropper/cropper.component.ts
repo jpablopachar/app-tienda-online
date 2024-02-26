@@ -9,7 +9,7 @@ import { dataURLtoFile } from '../../utils'
   imports: [CommonModule, ImageCropperModule],
   templateUrl: './cropper.component.html',
   styles: `
-    @import 'styles/colors';
+    @import "styles/colors.scss";
 
     .cropper {
       &__content {
@@ -32,7 +32,7 @@ import { dataURLtoFile } from '../../utils'
   `,
 })
 export class CropperComponent {
-  @Input() imageFile!: File | null;
+  @Input() imageFile!: File | undefined;
 
   @Output() changed: EventEmitter<File>;
 
