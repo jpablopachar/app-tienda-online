@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace BusinessLogic.Migrations
+namespace BusinessLogic.Migrations.Market
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class MarketOnlineMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

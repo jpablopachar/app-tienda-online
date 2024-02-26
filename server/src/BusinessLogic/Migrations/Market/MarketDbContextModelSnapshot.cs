@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BusinessLogic.Migrations
+namespace BusinessLogic.Migrations.Market
 {
     [DbContext(typeof(MarketDbContext))]
     partial class MarketDbContextModelSnapshot : ModelSnapshot

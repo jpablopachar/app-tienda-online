@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BusinessLogic.Migrations
+namespace BusinessLogic.Migrations.Market
 {
     [DbContext(typeof(MarketDbContext))]
-    [Migration("20240226042449_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240226070526_MarketOnlineMigration")]
+    partial class MarketOnlineMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
