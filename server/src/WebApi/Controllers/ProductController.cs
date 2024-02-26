@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ProductController(IGenericRepository<Product> productRepository, IMapper mapper) : ApiController
     {
         private readonly IGenericRepository<Product> _productRepository = productRepository;

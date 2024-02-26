@@ -1,6 +1,7 @@
 using BusinessLogic.Data;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Logic
@@ -21,6 +22,11 @@ namespace BusinessLogic.Logic
             _context.Set<TEntity>().Add(entity);
         }
 
+        public async Task<int> CountAsync(ISpecification<TEntity> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
+
         public void DeleteEntity(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
@@ -31,9 +37,19 @@ namespace BusinessLogic.Logic
             return await _context.Set<TEntity>().ToListAsync();
         }
 
+        public Task<IReadOnlyList<TEntity>> GetAllWithSpec(ISpecification<TEntity> spec)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
+        }
+
+        public Task<TEntity> GetByIdWithSpec(ISpecification<TEntity> spec)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<int> UpdateAsync(TEntity entity)
@@ -50,6 +66,11 @@ namespace BusinessLogic.Logic
             _context.Set<TEntity>().Attach(entity);
 
             _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+        {
+            return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsQueryable(), specification);
         }
     }
 }
