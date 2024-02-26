@@ -3,26 +3,26 @@ using Core.Specifications;
 
 namespace Core.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : Base
+    public interface IGenericRepository<T> where T : Base
     {
-        Task<TEntity?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id);
 
-        Task<IReadOnlyList<TEntity>> GetAllAsync();
+        Task<IReadOnlyList<T>> GetAllAsync();
 
-        Task<TEntity> GetByIdWithSpec(ISpecification<TEntity> spec);
+        Task<T?> GetByIdWithSpec(ISpecification<T> spec);
 
-        Task<IReadOnlyList<TEntity>> GetAllWithSpec(ISpecification<TEntity> spec);
+        Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec);
 
-        Task<int> CountAsync(ISpecification<TEntity> spec);
+        Task<int> CountAsync(ISpecification<T> spec);
 
-        Task<int> AddAsync(TEntity entity);
+        Task<int> AddAsync(T entity);
 
-        Task<int> UpdateAsync(TEntity entity);
+        Task<int> UpdateAsync(T entity);
 
-        void AddEntity(TEntity entity);
+        void AddEntity(T entity);
 
-        void UpdateEntity(TEntity entity);
+        void UpdateEntity(T entity);
 
-        void DeleteEntity(TEntity entity);
+        void DeleteEntity(T entity);
     }
 }

@@ -2,34 +2,34 @@ using System.Linq.Expressions;
 
 namespace Core.Specifications
 {
-    public class Specification<TEntity> : ISpecification<TEntity>
+    public class Specification<T> : ISpecification<T>
     {
         public Specification() { }
 
-        public Specification(Expression<Func<TEntity, bool>> criteria)
+        public Specification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }
 
-        public Expression<Func<TEntity, bool>> Criteria { get; }
+        public Expression<Func<T, bool>> Criteria { get; }
 
-        public List<Expression<Func<TEntity, object>>> Includes { get; } = [];
+        public List<Expression<Func<T, object>>> Includes { get; } = [];
 
-        protected void AddInclude(Expression<Func<TEntity, object>> includeExpression)
+        protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
 
-        public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
+        public Expression<Func<T, object>>? OrderBy { get; private set; }
 
-        public Expression<Func<TEntity, object>>? OrderByDescending { get; private set; }
+        public Expression<Func<T, object>>? OrderByDescending { get; private set; }
 
-        protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
+        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
         {
             OrderBy = orderByExpression;
         }
 
-        protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescExpression)
+        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescExpression)
         {
             OrderByDescending = orderByDescExpression;
         }

@@ -24,7 +24,7 @@ namespace WebApi.Controllers
 
             var totalProducts = await _productRepository.CountAsync(countSpecification);
 
-            var rounded = Math.Ceiling((double)totalProducts / productParams.PageSize);
+            var rounded = Math.Ceiling(Convert.ToDecimal(totalProducts) / Convert.ToDecimal(productParams.PageSize));
             var totalPages = Convert.ToInt32(rounded);
             var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 

@@ -2,15 +2,15 @@ using System.Linq.Expressions;
 
 namespace Core.Specifications
 {
-    public interface ISpecification<TEntity>
+    public interface ISpecification<T>
     {
-        Expression<Func<TEntity, bool>> Criteria { get; }
+        Expression<Func<T, bool>> Criteria { get; }
 
-        List<Expression<Func<TEntity, object>>> Includes { get; }
+        List<Expression<Func<T, object>>> Includes { get; }
 
-        Expression<Func<TEntity, object>>? OrderBy { get; }
+        Expression<Func<T, object>>? OrderBy { get; }
 
-        Expression<Func<TEntity, object>>? OrderByDescending { get; }
+        Expression<Func<T, object>>? OrderByDescending { get; }
 
         int Take { get; }
 

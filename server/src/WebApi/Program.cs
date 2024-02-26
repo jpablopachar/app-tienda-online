@@ -45,7 +45,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
 app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 
 app.MapControllers();
@@ -72,9 +73,9 @@ using (var environment = app.Services.CreateScope())
     }
     catch (Exception exception)
     {
-        var logger = loggerFactory.CreateLogger<Program>();
+        var logger = loggerFactory.CreateLogger<MarketDbContextData>();
 
-        logger.LogError(exception, "Se produjo un error al realizar la migración de la base de datos.");
+        logger.LogError(exception.Message);
     }
 }
 

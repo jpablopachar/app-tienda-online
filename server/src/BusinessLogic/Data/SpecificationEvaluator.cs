@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Data
 {
-    public class SpecificationEvaluator<TEntity> where TEntity : Base
+    public class SpecificationEvaluator<T> where T : Base
     {
-        public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
+        public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
         {
             if (specification.Criteria != null)
             {

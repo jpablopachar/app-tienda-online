@@ -10,7 +10,7 @@ namespace BusinessLogic.Data
         {
             try
             {
-                if (context.Brands!.Any())
+                if (!context.Brands!.Any())
                 {
                     var brandData = File.ReadAllText("../BusinessLogic/LoadData/brand.json");
                     var brands = JsonSerializer.Deserialize<List<Brand>>(brandData);
@@ -23,7 +23,7 @@ namespace BusinessLogic.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (context.Categories!.Any())
+                if (!context.Categories!.Any())
                 {
                     var categoryData = File.ReadAllText("../BusinessLogic/LoadData/category.json");
                     var categories = JsonSerializer.Deserialize<List<Category>>(categoryData);
@@ -36,7 +36,7 @@ namespace BusinessLogic.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (context.Products!.Any())
+                if (!context.Products!.Any())
                 {
                     var productData = File.ReadAllText("../BusinessLogic/LoadData/product.json");
                     var products = JsonSerializer.Deserialize<List<Product>>(productData);

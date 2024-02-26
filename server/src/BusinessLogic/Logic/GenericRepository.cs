@@ -6,71 +6,69 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Logic
 {
-    public class GenericRepository<TEntity>(MarketDbContext context) : IGenericRepository<TEntity> where TEntity : Base
+    public class GenericRepository<T>(MarketDbContext context) : IGenericRepository<T> where T : Base
     {
         private readonly MarketDbContext _context = context;
 
-        public async Task<int> AddAsync(TEntity entity)
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            _context.Set<TEntity>().Add(entity);
-
-            return await _context.SaveChangesAsync();
+            return await _context.Set<T>().ToListAsync();
         }
 
-        public void AddEntity(TEntity entity)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            _context.Set<TEntity>().Add(entity);
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<int> CountAsync(ISpecification<TEntity> spec)
+        public async Task<T?> GetByIdWithSpec(ISpecification<T> specification)
+        {
+            return await ApplySpecification(specification).FirstOrDefaultAsync();
+        }
+
+        public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> specification)
+        {
+            return await ApplySpecification(specification).ToListAsync();
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
+        }
+
+        public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
         }
 
-        public void DeleteEntity(TEntity entity)
+        public async Task<int> AddAsync(T entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            _context.Set<T>().Add(entity);
+
+            return await _context.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyList<TEntity>> GetAllAsync()
+        public async Task<int> UpdateAsync(T entity)
         {
-            return await _context.Set<TEntity>().ToListAsync();
-        }
-
-        public Task<IReadOnlyList<TEntity>> GetAllWithSpec(ISpecification<TEntity> spec)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<TEntity?> GetByIdAsync(int id)
-        {
-            return await _context.Set<TEntity>().FindAsync(id);
-        }
-
-        public Task<TEntity> GetByIdWithSpec(ISpecification<TEntity> spec)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> UpdateAsync(TEntity entity)
-        {
-            _context.Set<TEntity>().Attach(entity);
-
+            _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
 
             return await _context.SaveChangesAsync();
         }
 
-        public void UpdateEntity(TEntity entity)
+        public void AddEntity(T entity)
         {
-            _context.Set<TEntity>().Attach(entity);
+            _context.Set<T>().Add(entity);
+        }
 
+        public void UpdateEntity(T entity)
+        {
+            _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+        public void DeleteEntity(T entity)
         {
-            return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsQueryable(), specification);
+            _context.Set<T>().Remove(entity);
         }
     }
 }
