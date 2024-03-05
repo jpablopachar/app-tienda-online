@@ -5,6 +5,7 @@ import { Router, RouterOutlet } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { HeaderComponent } from './components/header/header.component'
+import { MenuListComponent } from './components/menu-list/menu-list.component'
 import { User } from './models/server'
 import { ButtonComponent } from './shared'
 import {
@@ -24,6 +25,7 @@ import {
     MatSidenavModule,
     ButtonComponent,
     HeaderComponent,
+    MenuListComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

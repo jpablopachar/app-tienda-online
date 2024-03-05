@@ -1,11 +1,11 @@
 <mat-sidenav-container>
     <mat-sidenav #menu role="navigation">
-        <!-- <app-menu-list
+        <app-menu-list
             (menuToggle)="menu.close()"
             (signOut)="onSignOut()"
             [isAuthorized]="isAuthorized$ | async"
             [user]="user$ | async"
-        ></app-menu-list> -->
+        ></app-menu-list>
     </mat-sidenav>
     <mat-sidenav-content>
         <app-header
