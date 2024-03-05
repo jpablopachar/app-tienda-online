@@ -22,9 +22,12 @@ import {
   MAT_DATE_LOCALE,
   MatDateFormats,
 } from '@angular/material/core'
+import { provideEffects } from '@ngrx/effects'
+import { provideState, provideStore } from '@ngrx/store'
 import { provideStoreDevtools } from '@ngrx/store-devtools'
 import { environment } from '@src/environments/environment'
 import { routes } from './app.routes'
+import { UserEffects, userReducers } from './store'
 
 const APP_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -50,7 +53,7 @@ export const appConfig: ApplicationConfig = {
       ),
       provideStorage((): FirebaseStorage => getStorage()),
     ]),
-    // provideStore(),
+    provideStore({}),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -58,8 +61,8 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    // provideEffects(),
-    // provideState('user', userReducers),
+    provideEffects(UserEffects),
+    provideState('user', userReducers),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
   ],
