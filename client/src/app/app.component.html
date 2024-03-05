@@ -1,2 +1,21 @@
-<router-outlet></router-outlet>
-<app-button>Este es un botón</app-button>
+<mat-sidenav-container>
+    <mat-sidenav #menu role="navigation">
+        <!-- <app-menu-list
+            (menuToggle)="menu.close()"
+            (signOut)="onSignOut()"
+            [isAuthorized]="isAuthorized$ | async"
+            [user]="user$ | async"
+        ></app-menu-list> -->
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <app-header
+            (signOut)="onSignOut()"
+            (menuClicked)="menu.toggle()"
+            [isAuthorized]="isAuthorized$ | async"
+            [user]="user$ | async"
+        ></app-header>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

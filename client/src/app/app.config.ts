@@ -16,17 +16,21 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
 
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http'
 import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
   MatDateFormats,
 } from '@angular/material/core'
+import { MatIconModule } from '@angular/material/icon'
+import { MatListModule } from '@angular/material/list'
+import { MatSidenavModule } from '@angular/material/sidenav'
 import { provideEffects } from '@ngrx/effects'
 import { provideState, provideStore } from '@ngrx/store'
 import { provideStoreDevtools } from '@ngrx/store-devtools'
 import { environment } from '@src/environments/environment'
 import { routes } from './app.routes'
+import { authInterceptor } from './interceptors'
 import { UserEffects, userReducers } from './store'
 
 const APP_DATE_FORMATS: MatDateFormats = {
@@ -44,9 +48,12 @@ const APP_DATE_FORMATS: MatDateFormats = {
 export const appConfig: ApplicationConfig = {
   providers: [
     HttpClientModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
     provideRouter(routes),
     provideAnimations(),
-    // provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom([
       provideFirebaseApp(
         (): FirebaseApp => initializeApp(environment.firebaseConfig)

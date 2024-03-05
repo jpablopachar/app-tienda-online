@@ -1,0 +1,41 @@
+<div class="header">
+    <div class="header__title">
+        <div>
+            <a
+                class="app-a"
+                routerLinkActive="app-a_active"
+                (click)="onClicked()"
+            >
+                <span class="material-icons md-36 estiloIcon">menu</span>
+            </a>
+        </div>
+        <span>Store JPPachar</span>
+    </div>
+    <div class="header__navigation">
+        <a class="app-a" routerLink="/" routerLinkActive="app-a_active">Home</a>
+        <a class="app-a" routerLink="shop" routerLinkActive="app-a_active"
+            >Tienda</a
+        >
+        <a class="app-a" routerLink="demo" routerLinkActive="app-a_active"
+            >Contacto</a
+        >
+    </div>
+    <div class="header__buttons">
+        <a routerLink="shop" class="app-a" routerLinkActive="app-a_active">
+            <span class="material-icons md-36 estiloIcon">shopping_cart</span>
+        </a>
+        @if (!isAuthorized) {
+            <app-button routerLink="auth/login">Login</app-button>
+            <app-button routerLink="auth/registration">Registrar</app-button>
+        } @else {
+            <span>{{ user ? user.name + " " + user.lastName : null}}</span>
+        }
+        <a
+            class="app-a"
+            *ngIf="isAuthorized"
+            (click)="onSignOut()"
+            routerLinkActive="app-a_active"
+            >Salir Sesion</a
+        >
+    </div>
+</div>
