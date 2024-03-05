@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router'
 import { AuthRoutesUrl } from './auth.routes.enum'
 
-export const staticRoutes: Routes = [
+export const AuthRoutes: Routes = [
   {
     path: AuthRoutesUrl.LOGIN,
     loadComponent: () =>

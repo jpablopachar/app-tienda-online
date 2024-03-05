@@ -8,27 +8,24 @@ import {
 } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
 import { MatListModule } from '@angular/material/list'
+import { RouterModule } from '@angular/router'
 import { User } from '@app/models/server'
 
 @Component({
   selector: 'app-menu-list',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatListModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatListModule],
   template: `
     <mat-nav-list>
+      <a
+        mat-list-item
+        (click)="closeMenu()"
+        routerLink="/"
+      >
+        <mat-icon>home</mat-icon>
+        <span class="navegacion-list-label">Home</span>
+      </a>
       @if (isAuthorized) {
-        <a
-          mat-list-item
-          (click)="closeMenu()"
-          routerLink="/"
-        >
-          <mat-icon>home</mat-icon>
-          <span class="navegacion-list-label">Home</span>
-        </a>
-        <a mat-list-item (click)="closeMenu()">
-          <mat-icon>contact_support</mat-icon>
-          <span class="navegacion-list-label">Contacto</span>
-        </a>
         <a
           mat-list-item
           (click)="closeMenu()"
@@ -71,6 +68,10 @@ import { User } from '@app/models/server'
           <span class="navegacion-list-label">Registrar</span>
         </a>
       }
+      <a mat-list-item (click)="closeMenu()">
+        <mat-icon>contact_support</mat-icon>
+        <span class="navegacion-list-label">Contacto</span>
+      </a>
     </mat-nav-list>
   `,
   styles: `

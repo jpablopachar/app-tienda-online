@@ -6,13 +6,14 @@ import {
   Input,
   Output,
 } from '@angular/core'
+import { RouterModule } from '@angular/router'
 import { User } from '@app/models/server'
 import { ButtonComponent } from '@app/shared'
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, RouterModule, ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
