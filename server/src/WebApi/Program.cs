@@ -77,7 +77,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 

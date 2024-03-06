@@ -22,16 +22,16 @@ type PasswordType = 'password' | 'text';
       <input
         type="text"
         class="app-input"
-        [value]="value"
+        [value]="value()"
         [placeholder]="placeholder || 'Password'"
         [attr.disabled]="isDisabled() ? true : null"
         (keyup)="onKeyup($event)"
         (blur)="onBlur()"
-        [attr.type]="passwordType"
+        [attr.type]="passwordType()"
       />
-      <!--<div class="password__actions" (click)="togglePassword()">
+      <div class="password__actions" (click)="togglePassword()">
         <span>{{ passwordType() === 'password' ? 'Show' : 'Hide' }}</span>
-      </div> -->
+      </div>
     </div>
   `,
   styles: `
@@ -71,10 +71,14 @@ export class PasswordComponent implements ControlValueAccessor {
 
   public value!: WritableSignal<string>;
   public isDisabled!: WritableSignal<boolean>;
-  public passwordType: WritableSignal<PasswordType> = signal('password');
+  public passwordType: WritableSignal<PasswordType>;
 
   constructor() {
     this.changed = new EventEmitter<string>();
+
+    this.isDisabled = signal(false);
+    this.value = signal('');
+    this.passwordType = signal('password');
   }
 
   private propagateChange: any = (): void => {};
@@ -101,7 +105,7 @@ export class PasswordComponent implements ControlValueAccessor {
 
     this.value.set((target as HTMLInputElement).value);
 
-    this.propagateChange(this.value);
+    this.propagateChange(this.value());
 
     this.changed.emit(this.value());
   }

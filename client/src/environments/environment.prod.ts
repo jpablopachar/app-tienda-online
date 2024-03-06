@@ -5,7 +5,7 @@ export const environment = {
     url: 'https://ecommerce-e4e6c.web.app/profile/new',
     handleCodeInApp: true
   },
-  url: 'http://localhost:4200',
+  url: 'http://localhost:5000/api',
   firebaseConfig: {
     apiKey: 'AIzaSyB33xV0oz2bGTKb0QQCF3RuEgqI4ANsq7A',
     authDomain: 'app-tienda-online-9a571.firebaseapp.com',

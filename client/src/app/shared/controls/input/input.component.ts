@@ -19,7 +19,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
     <input
       type="text"
       class="app-input"
-      [value]="value"
+      [value]="value()"
       [placeholder]="placeholder || ''"
       [attr.disabled]="isDisabled() ? true : null"
       (keyup)="onKeyup($event)"
@@ -49,11 +49,14 @@ export class InputComponent implements ControlValueAccessor {
 
   @Output() changed: EventEmitter<string>;
 
-  public value: WritableSignal<string> = signal('');
-  public isDisabled: WritableSignal<boolean> = signal(false);
+  public value: WritableSignal<string>;
+  public isDisabled: WritableSignal<boolean>;
 
   constructor() {
     this.changed = new EventEmitter<string>();
+
+    this.value = signal('');
+    this.isDisabled = signal(false);
   }
 
   private propagateChange: any = (): void => {};
