@@ -36,7 +36,7 @@ namespace BusinessLogic.Logic
                 }
             }
 
-            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenConfiguration = new SecurityTokenDescriptor
             {
