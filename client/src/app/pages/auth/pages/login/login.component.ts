@@ -11,7 +11,7 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms'
 import {
   ButtonComponent,
@@ -93,7 +93,7 @@ import { Store } from '@ngrx/store'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  public form!: FormGroup;
+  public form: FormGroup;
   public regexErrors = regexErrors;
 
   public $loading: WritableSignal<boolean | null>;
@@ -139,15 +139,12 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log(this.form);
     if (this.form.valid) {
       const { email, password } = this.form.value;
       const credentials: EmailPasswordCredentials = {
         email,
         password,
       };
-
-      console.log('credentials', credentials);
 
       this._store.dispatch(signInEmailAction({ credentials }));
     } else {

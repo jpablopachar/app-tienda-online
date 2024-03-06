@@ -31,7 +31,7 @@ export const signUpEmail$ = createEffect(
 
         return userService.signUp(user).pipe(
           tap((res: User): void => {
-            localStorage.setItem('email', res.token);
+            localStorage.setItem('token', res.token);
 
             router.navigate(['/']);
           }),

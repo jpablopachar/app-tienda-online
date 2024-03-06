@@ -9,4 +9,4 @@ export interface UserRequest extends User {
   password: string;
 }
 
-export type UserCreateRequest = Omit<UserRequest, 'id' | 'token' | 'imagen' | 'admin' >;
+export type UserCreateRequest = Omit<UserRequest, 'id' | 'token' | 'image' | 'admin' >;
