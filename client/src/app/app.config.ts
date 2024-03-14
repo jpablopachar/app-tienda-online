@@ -68,3 +68,5 @@ export const appConfig: ApplicationConfig = {
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
   ],
 };
+
+// https://dev.to/ngrx/using-ngrx-packages-with-standalone-angular-features-53d8#using-ngrx-modules-with-standalone-angular-apis
