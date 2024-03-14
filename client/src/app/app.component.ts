@@ -14,7 +14,7 @@ import {
   selectGetIsAuthorized,
   selectGetUser,
   signOutEmailAction,
-} from './store'
+} from './store/user'
 
 @Component({
   selector: 'app-root',

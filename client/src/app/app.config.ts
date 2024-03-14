@@ -16,18 +16,23 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
 
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http'
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http'
 import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
   MatDateFormats,
 } from '@angular/material/core'
+import { provideEffects } from '@ngrx/effects'
 import { provideStore } from '@ngrx/store'
 import { provideStoreDevtools } from '@ngrx/store-devtools'
 import { environment } from '@src/environments/environment'
 import { routes } from './app.routes'
 import { authInterceptor } from './interceptors'
-// import { UserEffects, userReducers } from './store'
+import { effects, reducers } from './store'
 
 const APP_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -61,11 +66,14 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    /* provideEffects(UserEffects),
-    provideState('user', userReducers), */
+    provideEffects(effects),
+    provideStore(reducers, {
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+      },
+    }),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
   ],
 };
-
-// https://dev.to/ngrx/using-ngrx-packages-with-standalone-angular-features-53d8#using-ngrx-modules-with-standalone-angular-apis
