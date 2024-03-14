@@ -10,6 +10,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/auth/auth.routes').then((r): Routes => r.AuthRoutes),
       },
+      {
+        path: RoutesUrl.SHOP,
+        loadChildren: () =>
+          import('./pages/shop/shop.routes').then((r): Routes => r.ShopRoutes),
+      },
       /* {
         path: RoutesUrl.PROPERTY,
         providers: [

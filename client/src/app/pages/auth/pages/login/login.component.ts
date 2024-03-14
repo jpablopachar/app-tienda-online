@@ -28,7 +28,7 @@ import {
   UserState,
   selectGetLoading,
   signInEmailAction,
-} from '@app/store'
+} from '@app/store/user'
 import { Store } from '@ngrx/store'
 
 @Component({

@@ -8,7 +8,7 @@ import {
 } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ButtonComponent, FormFieldComponent, InputComponent, PasswordComponent, SpinnerComponent, markFormGroupTouched, regex, regexErrors } from '@app/shared'
-import { UserCreateRequest, UserState, selectGetLoading, signUpEmailAction } from '@app/store'
+import { UserCreateRequest, UserState, selectGetLoading, signUpEmailAction } from '@app/store/user'
 import { Store } from '@ngrx/store'
 
 @Component({

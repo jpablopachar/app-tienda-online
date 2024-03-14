@@ -15,4 +15,6 @@ export enum RoutesUrl {
   // Static routes
   WELCOME = 'welcome',
   NOT_FOUND = '404',
+  // Shop routes
+  SHOP = 'shop',
 }

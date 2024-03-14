@@ -9,7 +9,7 @@ const initialDictionariesState: DictionariesState = {
   error: null
 };
 
-export const userReducers: ActionReducer<DictionariesState, Action> =
+export const dictionaryReducers: ActionReducer<DictionariesState, Action> =
   createReducer<DictionariesState>(
     initialDictionariesState,
     on(

@@ -1,19 +1,19 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { DictionariesState } from './dictionary.states'
 
-export const selectUser = createFeatureSelector<DictionariesState>('dictionaries');
+export const selectDictionaries = createFeatureSelector<DictionariesState>('dictionaries');
 
 export const selectGetDictionaries = createSelector(
-  selectUser,
+  selectDictionaries,
   (state: DictionariesState) => state.entities
 );
 
 export const selectGetDictionariesLoading = createSelector(
-  selectUser,
+  selectDictionaries,
   (state: DictionariesState) => state.loading
 );
 
 export const selectGetDictionariesError = createSelector(
-  selectUser,
+  selectDictionaries,
   (state: DictionariesState) => state.error
 );
