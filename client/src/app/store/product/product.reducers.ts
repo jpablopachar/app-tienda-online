@@ -7,6 +7,7 @@ export const productInitialState: ProductState = {
   product: null,
   loading: null,
   error: null
+
 }
 
 export const productReducers: ActionReducer<ProductState, Action> =
@@ -65,7 +66,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
       })
     ),
     on(
-      fromActions.readProduct,
+      fromActions.getProduct,
       (state: ProductState): ProductState => ({
         ...state,
         loading: true,
@@ -73,7 +74,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
       })
     ),
     on(
-      fromActions.readProductSuccess,
+      fromActions.getProductSuccess,
       (state: ProductState, action): ProductState => ({
         ...state,
         loading: false,
@@ -82,7 +83,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
       })
     ),
     on(
-      fromActions.readProductError,
+      fromActions.getProductError,
       (state: ProductState, action): ProductState => ({
         ...state,
         loading: false,

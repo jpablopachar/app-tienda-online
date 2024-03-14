@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Product } from '@app/models/server'
+import { Pagination, Product } from '@app/models/server'
 import { ProductCreateRequest } from '@app/store'
 import { environment } from '@src/environments/environment'
 import { Observable } from 'rxjs'
@@ -28,5 +28,9 @@ export class ProductService {
 
   public getProduct(id: string): Observable<Product> {
     return this._http.get<Product>(`${this._url}${ProductUrl.PRODUCT}/${id}`);
+  }
+
+  public getProducts(request: string): Observable<Pagination> {
+    return this._http.get<Pagination>(`${this._url}${ProductUrl.PRODUCT}?${request}`);
   }
 }

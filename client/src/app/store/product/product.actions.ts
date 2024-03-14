@@ -1,5 +1,6 @@
+import { HttpParams } from '@angular/common/http'
 import { ProductForm } from '@app/models/client'
-import { Product } from '@app/models/server'
+import { Pagination, Product } from '@app/models/server'
 import { createAction, props } from '@ngrx/store'
 import { ProductCreateRequest, ProductUpdateRequest } from './product.models'
 import { ProductTypes } from './product.types'
@@ -46,17 +47,32 @@ export const updateProductError = createAction(
   props<{ error: string }>()
 );
 
-export const readProduct = createAction(
-  ProductTypes.READ,
+export const getProduct = createAction(
+  ProductTypes.GET_PRODUCT,
   props<{ id: string }>()
 );
 
-export const readProductSuccess = createAction(
-  ProductTypes.READ_SUCCESS,
+export const getProductSuccess = createAction(
+  ProductTypes.GET_PRODUCT_SUCCESS,
   props<{ product: Product }>()
 );
 
-export const readProductError = createAction(
-  ProductTypes.READ_ERROR,
+export const getProductError = createAction(
+  ProductTypes.GET_PRODUCT_ERROR,
+  props<{ error: string }>()
+);
+
+export const getProducts = createAction(
+  ProductTypes.GET_PRODUCTS,
+  props<{ paginationRequest: HttpParams, paramsUrl: string }>()
+);
+
+export const getProductsSuccess = createAction(
+  ProductTypes.GET_PRODUCTS_SUCCESS,
+  props<{ pagination: Pagination | null }>()
+);
+
+export const getProductsError = createAction(
+  ProductTypes.GET_PRODUCTS_ERROR,
   props<{ error: string }>()
 );
