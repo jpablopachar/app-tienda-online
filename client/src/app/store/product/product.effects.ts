@@ -1,9 +1,9 @@
 import { inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { Product } from '@app/models/server'
+import { ProductService } from '@app/services'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { catchError, delay, map, mergeMap, of, tap } from 'rxjs'
-import { ProductService } from '../services/product.service'
 import {
   createProduct,
   createProductError,

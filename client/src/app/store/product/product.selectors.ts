@@ -22,7 +22,7 @@ export const selectGetProduct = createSelector(
   (state: ProductState): Product | null => state.product
 );
 
-export const selectGetLoading = createSelector(
+export const selectGetProductLoading = createSelector(
   selectProduct,
   (state: ProductState): boolean | null => state.loading
 );

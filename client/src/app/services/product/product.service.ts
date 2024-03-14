@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { Product } from '@app/models/server'
+import { ProductCreateRequest } from '@app/store'
 import { environment } from '@src/environments/environment'
 import { Observable } from 'rxjs'
-import { ProductCreateRequest } from '../store/product.models'
 import { ProductUrl } from './product.urls'
 
 @Injectable({
