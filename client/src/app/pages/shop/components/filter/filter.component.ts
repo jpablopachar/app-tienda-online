@@ -55,8 +55,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   public items: ControlItem[];
   public $categories: WritableSignal<ControlItem[] | null>;
   public $brands: WritableSignal<ControlItem[] | null>;
-  public $paginatorParams: WritableSignal<HttpParams | null | undefined>;
 
+  private _paginatorParams!: HttpParams | null | undefined;
   private _destroy: Subject<any>;
   private _formBuilder: FormBuilder;
   private _store: Store<fromRoot.State>;
@@ -79,7 +79,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     this.$categories = signal(null);
     this.$brands = signal(null);
-    this.$paginatorParams = signal(null);
 
     this._destroy = new Subject<any>();
   }
@@ -89,11 +88,8 @@ export class FilterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroy))
       .pipe(select(fromProducts.selectPaginationRequest))
       .subscribe((data: HttpParams | null): void => {
-        console.log('paginatorParams', data);
-        this.$paginatorParams.set(data);
+        this._paginatorParams = data;
       });
-
-    console.log('paginatorParams', this.$paginatorParams());
 
     this.$categories.set(
       this.dictionaries?.categories.controlItems as ControlItem[]
@@ -105,51 +101,52 @@ export class FilterComponent implements OnInit, OnDestroy {
       sort: {
         items: this.items,
         changed: (): void => {
-          this.$paginatorParams.set(this.$paginatorParams()?.delete('sort'));
+          this._paginatorParams = this._paginatorParams?.delete('sort');
 
-          this.$paginatorParams.set(
-            this.$paginatorParams()?.set('sort', this.form.value.sort)
+          this._paginatorParams = this._paginatorParams?.set(
+            'sort',
+            this.form.value.sort
           );
 
           this._store.dispatch(
             fromProducts.getProductsAction({
-              paginationRequest: this.$paginatorParams() as HttpParams,
-              paramsUrl: this.$paginatorParams()?.toString() as string,
+              paginationRequest: this._paginatorParams as HttpParams,
+              paramsUrl: this._paginatorParams?.toString() as string,
             })
           );
-
-          console.log('change', this.$paginatorParams());
         },
       },
     };
   }
 
   public onCategorySelectionChange(event: MatSelectionListChange): void {
-    this.$paginatorParams.set(this.$paginatorParams()?.delete('category'));
+    this._paginatorParams = this._paginatorParams?.delete('category');
 
-    this.$paginatorParams.set(
-      this.$paginatorParams()?.set('category', this.form.get('category')?.value)
+    this._paginatorParams = this._paginatorParams?.set(
+      'category',
+      this.form.get('category')?.value
     );
 
     this._store.dispatch(
       fromProducts.getProductsAction({
-        paginationRequest: this.$paginatorParams() as HttpParams,
-        paramsUrl: this.$paginatorParams()?.toString() as string,
+        paginationRequest: this._paginatorParams as HttpParams,
+        paramsUrl: this._paginatorParams?.toString() as string,
       })
     );
   }
 
   public onBrandSelectionChange(event: MatSelectionListChange): void {
-    this.$paginatorParams.set(this.$paginatorParams()?.delete('brand'));
+    this._paginatorParams = this._paginatorParams?.delete('brand');
 
-    this.$paginatorParams.set(
-      this.$paginatorParams()?.set('brand', this.form.get('brand')?.value)
+    this._paginatorParams = this._paginatorParams?.set(
+      'brand',
+      this.form.get('brand')?.value
     );
 
     this._store.dispatch(
       fromProducts.getProductsAction({
-        paginationRequest: this.$paginatorParams() as HttpParams,
-        paramsUrl: this.$paginatorParams()?.toString() as string,
+        paginationRequest: this._paginatorParams as HttpParams,
+        paramsUrl: this._paginatorParams?.toString() as string,
       })
     );
   }

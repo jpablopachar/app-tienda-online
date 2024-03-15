@@ -20,6 +20,7 @@ import {
   ProductsComponent,
   SearchComponent,
 } from './components'
+import { PaginatorComponent } from './components/paginator/paginator.component'
 import * as fromProducts from './store/products'
 
 @Component({
@@ -31,12 +32,18 @@ import * as fromProducts from './store/products'
     ProductsComponent,
     SpinnerComponent,
     SearchComponent,
+    PaginatorComponent
   ],
   template: `
     <div class="container">
       <div class="filter">
         @if ($dictionaries()) {
         <app-filter [dictionaries]="$dictionaries()"></app-filter>
+        }
+      </div>
+      <div class="pagination">
+        @if (pagination$ | async; as pagination) {
+          <app-paginator [pagination]="pagination"></app-paginator>
         }
       </div>
       <div class="buscador">

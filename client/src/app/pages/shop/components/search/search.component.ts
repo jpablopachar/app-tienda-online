@@ -85,9 +85,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroy))
       .pipe(select(fromProducts.selectPaginationRequest))
       .subscribe((data: HttpParams | null): void => {
-        console.log('paginatorParams2', data);
         this._$paginatorParams = data;
-        console.log('form', this.form);
       });
 
   }

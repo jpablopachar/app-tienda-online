@@ -76,7 +76,6 @@ export class SelectComponent implements ControlValueAccessor {
   private propagateTouched: any = () => {};
 
   public writeValue(value: Value): void {
-    console.log('value', value);
     this.value = value;
   }
 
