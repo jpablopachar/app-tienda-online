@@ -5,9 +5,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  WritableSignal,
-  forwardRef,
-  signal,
+  forwardRef
 } from '@angular/core'
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
@@ -19,9 +17,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
     <input
       type="text"
       class="app-input"
-      [value]="value()"
+      [value]="value"
       [placeholder]="placeholder || ''"
-      [attr.disabled]="isDisabled() ? true : null"
+      [attr.disabled]="isDisabled ? true : null"
       (keyup)="onKeyup($event)"
       (blur)="onBlur()"
     />
@@ -49,21 +47,21 @@ export class InputComponent implements ControlValueAccessor {
 
   @Output() changed: EventEmitter<string>;
 
-  public value: WritableSignal<string>;
-  public isDisabled: WritableSignal<boolean>;
+  public value: string;
+  public isDisabled: boolean;
 
   constructor() {
     this.changed = new EventEmitter<string>();
 
-    this.value = signal('');
-    this.isDisabled = signal(false);
+    this.value = '';
+    this.isDisabled = false;
   }
 
   private propagateChange: any = (): void => {};
   private propagateTouched: any = (): void => {};
 
   public writeValue(value: string): void {
-    this.value.set(value);
+    this.value = value;
   }
 
   public registerOnChange(fn: any): void {
@@ -73,17 +71,17 @@ export class InputComponent implements ControlValueAccessor {
     this.propagateTouched = fn;
   }
   public setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
+    this.isDisabled = isDisabled;
   }
 
   public onKeyup(event: Event): void {
     const { target } = event;
 
-    this.value.set((target as HTMLInputElement).value);
+    this.value = (target as HTMLInputElement).value;
 
-    this.propagateChange(this.value());
+    this.propagateChange(this.value);
 
-    this.changed.emit(this.value());
+    this.changed.emit(this.value);
   }
 
   public onBlur(): void {

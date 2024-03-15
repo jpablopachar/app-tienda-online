@@ -15,13 +15,23 @@ import * as fromRoot from '@app/store'
 import * as fromDictionaries from '@app/store/dictionary'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { FilterComponent, ProductsComponent } from './components'
+import {
+  FilterComponent,
+  ProductsComponent,
+  SearchComponent,
+} from './components'
 import * as fromProducts from './store/products'
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FilterComponent, ProductsComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    FilterComponent,
+    ProductsComponent,
+    SpinnerComponent,
+    SearchComponent,
+  ],
   template: `
     <div class="container">
       <div class="filter">
@@ -29,14 +39,17 @@ import * as fromProducts from './store/products'
         <app-filter [dictionaries]="$dictionaries()"></app-filter>
         }
       </div>
+      <div class="buscador">
+        <app-search></app-search>
+      </div>
       <div class="productos">
         @if (pagination$ | async; as pagination) {
-          <app-products [products]="pagination.data"></app-products>
+        <app-products [products]="pagination.data"></app-products>
         }
       </div>
     </div>
     @if ($loading()) {
-      <app-spinner></app-spinner>
+    <app-spinner></app-spinner>
     }
   `,
   styleUrls: ['./shop.component.scss'],
@@ -68,7 +81,9 @@ export class ShopComponent implements OnInit {
       this._store.selectSignal(fromProducts.selectGetShopLoading)()
     );
 
-    this.pagination$ = this._store.select(fromProducts.selectGetShop) as Observable<Pagination>;
+    this.pagination$ = this._store.select(
+      fromProducts.selectGetShop
+    ) as Observable<Pagination>;
 
     this.$dictionaries.set(
       this._storeRoot.selectSignal(fromDictionaries.selectGetDictionaries)()
