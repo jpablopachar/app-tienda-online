@@ -13,7 +13,7 @@ export const selectGetDictionariesLoading = createSelector(
   (state: DictionariesState) => state.loading
 );
 
-export const selectGetDictionariesError = createSelector(
+export const selectGetIsReady = createSelector(
   selectDictionaries,
-  (state: DictionariesState) => state.error
+  (state: DictionariesState) => state.entities && !state.loading
 );

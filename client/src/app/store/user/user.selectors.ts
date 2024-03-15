@@ -16,5 +16,5 @@ export const selectGetLoading = createSelector(
 
 export const selectGetIsAuthorized = createSelector(
   selectUser,
-  (state: UserState): boolean => !!state.email
+  (state: UserState): boolean => !!state.id
 );

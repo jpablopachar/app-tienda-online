@@ -1,1 +1,46 @@
-<p>filter works!</p>,
+<form [formGroup]="form" novalidate autocomplete="off">
+    <!-- <div class="filter">
+        <app-form-field
+            label="Ordenar por:"
+            [control]="form.controls.sort"
+            [isInline]="false"
+        >
+            <app-select
+                formControlName="sort"
+                [items]="controls.sort.items ? controls.sort.items : []"
+                (changed)="
+                    controls.sort.changed ? controls.sort.changed() : null
+                "
+            >
+            </app-select>
+        </app-form-field>
+    </div> -->
+    <div class="filter">
+        <b>Seleccione Marca</b>
+        <mat-selection-list
+            formControlName="brand"
+            [multiple]="false"
+            (selectionChange)="onBrandSelectionChange($event)"
+        >
+            <mat-list-option
+                *ngFor="let item of $brands()"
+                [value]="item.value"
+                >{{ item.label }}</mat-list-option
+            >
+        </mat-selection-list>
+    </div>
+    <div class="filter">
+        <b>Seleccione Categoría</b>
+        <mat-selection-list
+            formControlName="category"
+            [multiple]="false"
+            (selectionChange)="onCategorySelectionChange($event)"
+        >
+            <mat-list-option
+                *ngFor="let item of $categories()"
+                [value]="item.value"
+                >{{ item.label }}</mat-list-option
+            >
+        </mat-selection-list>
+    </div>
+</form>

@@ -6,15 +6,42 @@ import {
   inject,
   signal,
 } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
-import { ButtonComponent, FormFieldComponent, InputComponent, PasswordComponent, SpinnerComponent, markFormGroupTouched, regex, regexErrors } from '@app/shared'
-import { UserCreateRequest, UserState, selectGetLoading, signUpEmailAction } from '@app/store/user'
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms'
+import {
+  ButtonComponent,
+  FormFieldComponent,
+  InputComponent,
+  PasswordComponent,
+  SpinnerComponent,
+  markFormGroupTouched,
+  regex,
+  regexErrors,
+} from '@app/shared'
+import {
+  UserCreateRequest,
+  UserState,
+  selectGetLoading,
+  signUpEmailAction,
+} from '@app/store/user'
 import { Store } from '@ngrx/store'
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormFieldComponent, InputComponent, PasswordComponent, ButtonComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormFieldComponent,
+    InputComponent,
+    PasswordComponent,
+    ButtonComponent,
+    SpinnerComponent,
+  ],
   templateUrl: './registration.component.html',
   styles: `
     @import "styles/colors.scss";
@@ -127,10 +154,10 @@ export class RegistrationComponent {
         password,
         name,
         lastName,
-        username
+        username,
       };
 
-      this._store.dispatch(signUpEmailAction({ user }))
+      this._store.dispatch(signUpEmailAction({ user }));
     } else {
       markFormGroupTouched(this.form);
     }

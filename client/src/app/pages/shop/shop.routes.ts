@@ -4,6 +4,10 @@ import { ShopComponent } from "./shop.component"
 export const ShopRoutes: Routes = [
   {
     path: '',
+    /* providers: [
+      provideState('shop', reducers),
+      provideEffects(effects)
+    ], */
     component: ShopComponent
   }
 ];

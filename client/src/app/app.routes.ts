@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router'
-import { provideEffects } from '@ngrx/effects'
-import { provideState } from '@ngrx/store'
 import { RoutesUrl } from './routes.enum'
-import { effects, reducers } from './store'
 
 export const routes: Routes = [
   {
@@ -15,10 +12,6 @@ export const routes: Routes = [
       },
       {
         path: RoutesUrl.SHOP,
-        providers: [
-          provideState('shop', reducers),
-          provideEffects(effects)
-        ],
         loadChildren: () =>
           import('./pages/shop/shop.routes').then((r): Routes => r.ShopRoutes),
       },

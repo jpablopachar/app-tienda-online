@@ -8,13 +8,16 @@ import { HeaderComponent } from './components/header/header.component'
 import { MenuListComponent } from './components/menu-list/menu-list.component'
 import { User } from './models/server'
 import { ButtonComponent } from './shared'
-import {
+/* import {
   UserState,
   initAction,
   selectGetIsAuthorized,
   selectGetUser,
   signOutEmailAction,
-} from './store/user'
+} from './store/user' */
+import * as fromRoot from './store'
+import * as fromDictionaries from './store/dictionary'
+import * as fromUser from './store/user'
 
 @Component({
   selector: 'app-root',
@@ -31,7 +34,7 @@ import {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private _store: Store<UserState>;
+  private _store: Store<fromRoot.State>;
   private _router: Router;
 
   public user$!: Observable<User | null>;
@@ -43,16 +46,17 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.user$ = this._store.select(selectGetUser);
-    this.isAuthorized$ = this._store.select(selectGetIsAuthorized);
+    this.user$ = this._store.select(fromUser.selectGetUser);
+    this.isAuthorized$ = this._store.select(fromUser.selectGetIsAuthorized);
 
-    this._store.dispatch(initAction());
+    this._store.dispatch(fromDictionaries.initDictionariesAction());
+    this._store.dispatch(fromUser.initAction());
   }
 
   public onSignOut(): void {
     localStorage.removeItem('token');
 
-    this._store.dispatch(signOutEmailAction());
+    this._store.dispatch(fromUser.signOutEmailAction());
 
     this._router.navigate(['/auth/login']);
   }
