@@ -32,8 +32,9 @@ import { provideStoreDevtools } from '@ngrx/store-devtools'
 import { environment } from '@src/environments/environment'
 import { routes } from './app.routes'
 import { authInterceptor } from './interceptors'
-import { DictionaryEffects, dictionaryReducers } from './store/dictionary'
-import { UserEffects, userReducers } from './store/user'
+import { effects } from './store'
+import { dictionaryReducers } from './store/dictionary'
+import { userReducers } from './store/user'
 
 const APP_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -67,16 +68,9 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    provideEffects([UserEffects, DictionaryEffects]),
     provideState('user', userReducers),
     provideState('dictionaries', dictionaryReducers),
-    // provideState('shop', reducers),
-    /* provideStore(reducers, {
-      runtimeChecks: {
-        strictActionImmutability: true,
-        strictStateImmutability: true,
-      },
-    }), */
+    provideEffects([...effects]),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
   ],

@@ -8,13 +8,6 @@ import { HeaderComponent } from './components/header/header.component'
 import { MenuListComponent } from './components/menu-list/menu-list.component'
 import { User } from './models/server'
 import { ButtonComponent } from './shared'
-/* import {
-  UserState,
-  initAction,
-  selectGetIsAuthorized,
-  selectGetUser,
-  signOutEmailAction,
-} from './store/user' */
 import * as fromRoot from './store'
 import * as fromDictionaries from './store/dictionary'
 import * as fromUser from './store/user'

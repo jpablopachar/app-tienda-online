@@ -13,9 +13,5 @@ export enum ProductTypes {
 
   GET_PRODUCT = '[Product] Get: Inicio',
   GET_PRODUCT_SUCCESS = '[Product] Get: Éxito',
-  GET_PRODUCT_ERROR = '[Product] Get: Error',
-
-  GET_PRODUCTS = '[Products] Get: Inicio',
-  GET_PRODUCTS_SUCCESS = '[Products] Get: Éxito',
-  GET_PRODUCTS_ERROR = '[Products] Get: Error',
+  GET_PRODUCT_ERROR = '[Product] Get: Error'
 }

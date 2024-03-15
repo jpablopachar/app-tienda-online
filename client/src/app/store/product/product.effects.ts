@@ -1,6 +1,6 @@
 import { inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { Pagination, Product } from '@app/models/server'
+import { Product } from '@app/models/server'
 import { ProductService } from '@app/services'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { catchError, delay, map, mergeMap, of, tap } from 'rxjs'
@@ -11,9 +11,6 @@ import {
   getProduct,
   getProductError,
   getProductSuccess,
-  getProducts,
-  getProductsError,
-  getProductsSuccess,
   updateProduct,
   updateProductError,
   updateProductSuccess,
@@ -73,25 +70,6 @@ export const getProduct$ = createEffect(
           delay(1000),
           map((product: Product) => getProductSuccess({ product })),
           catchError((error) => of(getProductError(error)))
-        );
-      })
-    );
-  },
-  { functional: true }
-);
-
-export const getProducts$ = createEffect(
-  (
-    actions$ = inject(Actions),
-    productService: ProductService = inject(ProductService)
-  ) => {
-    return actions$.pipe(
-      ofType(getProducts),
-      mergeMap((action) => {
-        return productService.getProducts(action.paramsUrl).pipe(
-          delay(1000),
-          map((pagination: Pagination) => getProductsSuccess({ pagination })),
-          catchError((error) => of(getProductsError(error)))
         );
       })
     );

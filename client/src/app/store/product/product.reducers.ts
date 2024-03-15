@@ -7,7 +7,6 @@ export const productInitialState: ProductState = {
   product: null,
   loading: null,
   error: null
-
 }
 
 export const productReducers: ActionReducer<ProductState, Action> =

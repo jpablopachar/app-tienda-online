@@ -6,7 +6,8 @@ import { Dictionaries } from '@app/models/client/dictionary'
 import * as fromRoot from '@app/store'
 import * as fromDictionaries from '@app/store/dictionary'
 import { Store } from '@ngrx/store'
-import { FilterComponent } from './components/filter/filter.component'
+import { FilterComponent } from './components'
+// import { FilterComponent } from './components/filter/filter.component'
 
 @Component({
   selector: 'app-shop',
