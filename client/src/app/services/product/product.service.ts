@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { Pagination, Product } from '@app/models/server'
-import { ProductCreateRequest } from '@app/store/product'
+import { ProductCreateRequest } from '@app/pages/product/store/product'
 import { environment } from '@src/environments/environment'
 import { Observable } from 'rxjs'
 import { ProductUrl } from './product.urls'

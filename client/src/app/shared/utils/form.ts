@@ -11,7 +11,7 @@ export const markFormGroupTouched = (formGroup: any): void => {
 };
 
 export interface Control {
-  items?: ControlItem;
+  items?: ControlItem[];
   changed?: () => void;
   map?: (() => void) | any;
 }

@@ -5,8 +5,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  WritableSignal,
-  forwardRef,
+  forwardRef
 } from '@angular/core'
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { MatSelectChange, MatSelectModule } from '@angular/material/select'
@@ -25,9 +24,9 @@ import { ControlItem, Value } from '@app/models/client'
         (blur)="onBlur()"
       >
         @for (item of items; track item.value) {
-          <mat-option [value]="item.value">
-            {{ item.label }}
-          </mat-option>
+        <mat-option [value]="item.value">
+          {{ item.label }}
+        </mat-option>
         }
       </mat-select>
     </div>
@@ -66,8 +65,8 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Output() changed: EventEmitter<Value>;
 
-  public value!: WritableSignal<Value>;
-  public isDisabled!: WritableSignal<boolean>;
+  public value!: Value;
+  public isDisabled!: boolean;
 
   constructor() {
     this.changed = new EventEmitter<Value>();
@@ -77,7 +76,8 @@ export class SelectComponent implements ControlValueAccessor {
   private propagateTouched: any = () => {};
 
   public writeValue(value: Value): void {
-    this.value.set(value);
+    console.log('value', value);
+    this.value = value;
   }
 
   public registerOnChange(fn: any): void {
@@ -89,13 +89,13 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   public setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
+    this.isDisabled = isDisabled;
   }
 
   public onChanged(event: MatSelectChange): void {
     const value: any = event.value ? event.value : null;
 
-    this.value.set(value);
+    this.value = value;
 
     this.propagateChange(value);
 

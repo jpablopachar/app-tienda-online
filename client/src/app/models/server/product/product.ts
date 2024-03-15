@@ -4,9 +4,9 @@ export interface Product {
   description: string;
   stock: number;
   brandId: number;
-  brand: string;
+  brandName: string;
   categoryId: number;
-  category: string;
+  categoryName: string;
   price: number;
   image: string;
 }
