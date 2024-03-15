@@ -1,8 +1,4 @@
 export enum ProductTypes {
-  SET_FORM = '[Product] Form: Establecer',
-  UPDATE_FORM = '[Product] Form: Actualizar',
-  CLEAR_FORM = '[Product] Form: Limpiar',
-
   CREATE = '[Product] Create: Inicio',
   CREATE_SUCCESS = '[Product] Create: Éxito',
   CREATE_ERROR = '[Product] Create: Error',

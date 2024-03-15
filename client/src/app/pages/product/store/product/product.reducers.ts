@@ -1,20 +1,20 @@
 import { createReducer, on } from '@ngrx/store'
 import { Action, ActionReducer } from '@ngrx/store/src/models'
 import * as fromActions from './product.actions'
-import { ProductState } from './product.state'
+import { ProductListState } from './product.state'
 
-export const productInitialState: ProductState = {
+export const productInitialState: ProductListState = {
   product: null,
   loading: null,
   error: null
 }
 
-export const productReducers: ActionReducer<ProductState, Action> =
-  createReducer<ProductState>(
+export const productReducers: ActionReducer<ProductListState, Action> =
+  createReducer<ProductListState>(
     productInitialState,
     on(
       fromActions.createProduct,
-      (state: ProductState): ProductState => ({
+      (state: ProductListState): ProductListState => ({
         ...state,
         loading: true,
         error: null
@@ -22,7 +22,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.createProductSuccess,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: null,
@@ -31,7 +31,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.createProductError,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: action.error,
@@ -40,7 +40,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.updateProduct,
-      (state: ProductState): ProductState => ({
+      (state: ProductListState): ProductListState => ({
         ...state,
         loading: true,
         error: null
@@ -48,7 +48,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.updateProductSuccess,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: null,
@@ -57,7 +57,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.updateProductError,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: action.error,
@@ -66,7 +66,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.getProduct,
-      (state: ProductState): ProductState => ({
+      (state: ProductListState): ProductListState => ({
         ...state,
         loading: true,
         error: null
@@ -74,7 +74,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.getProductSuccess,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: null,
@@ -83,7 +83,7 @@ export const productReducers: ActionReducer<ProductState, Action> =
     ),
     on(
       fromActions.getProductError,
-      (state: ProductState, action): ProductState => ({
+      (state: ProductListState, action): ProductListState => ({
         ...state,
         loading: false,
         error: action.error,

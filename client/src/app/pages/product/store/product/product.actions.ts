@@ -1,20 +1,7 @@
-import { ProductForm } from '@app/models/client'
 import { Product } from '@app/models/server'
 import { createAction, props } from '@ngrx/store'
 import { ProductCreateRequest, ProductUpdateRequest } from './product.models'
 import { ProductTypes } from './product.types'
-
-export const setForm = createAction(
-  ProductTypes.SET_FORM,
-  props<{ productForm: ProductForm }>()
-);
-
-export const updateForm = createAction(
-  ProductTypes.UPDATE_FORM,
-  props<{ changes: Partial<ProductForm> }>()
-);
-
-export const clearForm = createAction(ProductTypes.CLEAR_FORM);
 
 export const createProduct = createAction(
   ProductTypes.CREATE,
