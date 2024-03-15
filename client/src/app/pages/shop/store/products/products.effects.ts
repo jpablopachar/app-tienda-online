@@ -11,12 +11,12 @@ export const getProducts$ = createEffect(
     productService: ProductService = inject(ProductService)
   ) => {
     return actions$.pipe(
-      ofType(fromActions.getProducts),
+      ofType(fromActions.getProductsAction),
       mergeMap((action) => {
         return productService.getProducts(action.paramsUrl).pipe(
           delay(1000),
-          map((pagination: Pagination) => fromActions.getProductsSuccess({ pagination })),
-          catchError((error) => of(fromActions.getProductsError(error)))
+          map((pagination: Pagination) => fromActions.getProductsSuccessAction({ pagination })),
+          catchError((error) => of(fromActions.getProductsErrorAction(error)))
         );
       })
     );

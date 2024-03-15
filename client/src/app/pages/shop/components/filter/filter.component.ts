@@ -112,7 +112,7 @@ export class FilterComponent implements OnInit, OnDestroy {
           );
 
           this._store.dispatch(
-            fromProducts.getProducts({
+            fromProducts.getProductsAction({
               paginationRequest: this.$paginatorParams() as HttpParams,
               paramsUrl: this.$paginatorParams()?.toString() as string,
             })
@@ -132,7 +132,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     );
 
     this._store.dispatch(
-      fromProducts.getProducts({
+      fromProducts.getProductsAction({
         paginationRequest: this.$paginatorParams() as HttpParams,
         paramsUrl: this.$paginatorParams()?.toString() as string,
       })
@@ -147,7 +147,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     );
 
     this._store.dispatch(
-      fromProducts.getProducts({
+      fromProducts.getProductsAction({
         paginationRequest: this.$paginatorParams() as HttpParams,
         paramsUrl: this.$paginatorParams()?.toString() as string,
       })

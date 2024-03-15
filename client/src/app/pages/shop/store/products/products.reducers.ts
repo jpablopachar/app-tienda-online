@@ -14,7 +14,7 @@ export const productsReducers: ActionReducer<ProductsState, Action> =
   createReducer<ProductsState>(
     productsInitialState,
     on(
-      fromActions.getProducts,
+      fromActions.getProductsAction,
       (state: ProductsState, action): ProductsState => ({
         ...state,
         loading: true,
@@ -23,7 +23,7 @@ export const productsReducers: ActionReducer<ProductsState, Action> =
       })
     ),
     on(
-      fromActions.getProductsSuccess,
+      fromActions.getProductsSuccessAction,
       (state: ProductsState, action): ProductsState => ({
         ...state,
         loading: false,
@@ -32,7 +32,7 @@ export const productsReducers: ActionReducer<ProductsState, Action> =
       })
     ),
     on(
-      fromActions.getProductsError,
+      fromActions.getProductsErrorAction,
       (state: ProductsState, action): ProductsState => ({
         ...state,
         loading: false,

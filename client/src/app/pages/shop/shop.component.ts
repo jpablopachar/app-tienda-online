@@ -10,16 +10,18 @@ import {
 } from '@angular/core'
 import { Dictionaries } from '@app/models/client/dictionary'
 import { Pagination } from '@app/models/server'
+import { SpinnerComponent } from '@app/shared'
 import * as fromRoot from '@app/store'
 import * as fromDictionaries from '@app/store/dictionary'
 import { Store } from '@ngrx/store'
-import { FilterComponent } from './components'
+import { Observable } from 'rxjs'
+import { FilterComponent, ProductsComponent } from './components'
 import * as fromProducts from './store/products'
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FilterComponent],
+  imports: [CommonModule, FilterComponent, ProductsComponent, SpinnerComponent],
   template: `
     <div class="container">
       <div class="filter">
@@ -27,7 +29,15 @@ import * as fromProducts from './store/products'
         <app-filter [dictionaries]="$dictionaries()"></app-filter>
         }
       </div>
+      <div class="productos">
+        @if (pagination$ | async; as pagination) {
+          <app-products [products]="pagination.data"></app-products>
+        }
+      </div>
     </div>
+    @if ($loading()) {
+      <app-spinner></app-spinner>
+    }
   `,
   styleUrls: ['./shop.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +45,8 @@ import * as fromProducts from './store/products'
 export class ShopComponent implements OnInit {
   public $loading: WritableSignal<boolean | null>;
   public $dictionaries: WritableSignal<Dictionaries | null>;
-  public $pagination: WritableSignal<Pagination | null>;
+
+  public pagination$!: Observable<Pagination>;
 
   public params: HttpParams;
 
@@ -48,7 +59,6 @@ export class ShopComponent implements OnInit {
 
     this.$loading = signal(null);
     this.$dictionaries = signal(null);
-    this.$pagination = signal(null);
 
     this.params = new HttpParams();
   }
@@ -58,9 +68,7 @@ export class ShopComponent implements OnInit {
       this._store.selectSignal(fromProducts.selectGetShopLoading)()
     );
 
-    this.$pagination.set(
-      this._store.selectSignal(fromProducts.selectGetShop)()
-    );
+    this.pagination$ = this._store.select(fromProducts.selectGetShop) as Observable<Pagination>;
 
     this.$dictionaries.set(
       this._storeRoot.selectSignal(fromDictionaries.selectGetDictionaries)()
@@ -70,7 +78,7 @@ export class ShopComponent implements OnInit {
     this.params = this.params.set('pageSize', 10);
 
     this._store.dispatch(
-      fromProducts.getProducts({
+      fromProducts.getProductsAction({
         paginationRequest: this.params,
         paramsUrl: this.params.toString(),
       })
