@@ -1,9 +1,7 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store'
-import { ProductState } from '..'
-
-export const selectProductForm = createFeatureSelector<ProductState>('productForm');
+import { createSelector } from '@ngrx/store'
+import { ProductState, selectProduct } from '..'
 
 export const selectGetProductForm = createSelector(
-  selectProductForm,
+  selectProduct,
   (state: ProductState) => state.form
 );

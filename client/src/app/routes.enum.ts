@@ -5,13 +5,10 @@ export enum RoutesUrl {
   // Children
   AUTH = 'auth',
   STATIC = 'static',
-  PROPERTY = 'inmueble',
+  PRODUCT = 'product',
   // Auth routes
   LOGIN = 'login',
   REGISTRATION = 'registration',
-  // Property routes
-  PROPERTY_LIST = 'list',
-  PROPERTY_NEW = 'nuevo',
   // Static routes
   WELCOME = 'welcome',
   NOT_FOUND = '404',

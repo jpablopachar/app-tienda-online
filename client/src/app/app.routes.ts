@@ -6,6 +6,15 @@ export const routes: Routes = [
     path: '',
     children: [
       {
+        path: RoutesUrl.PRODUCT,
+        /* providers: [
+          provideState('product', productReducers),
+          provideEffects(productEffects)
+        ], */
+        loadChildren: () =>
+          import('./pages/product/product.routes').then((r): Routes => r.ProductRoutes),
+      },
+      {
         path: RoutesUrl.AUTH,
         loadChildren: () =>
           import('./pages/auth/auth.routes').then((r): Routes => r.AuthRoutes),
@@ -15,18 +24,6 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/shop/shop.routes').then((r): Routes => r.ShopRoutes),
       },
-      /* {
-        path: RoutesUrl.PROPERTY,
-        providers: [
-          // provideStore({ property: propertyReducers }),
-          provideState('property', propertyReducers),
-          provideEffects(propertyEffects),
-        ],
-        loadChildren: () =>
-          import('./pages/property/property.routes').then(
-            (r): Routes => r.propertyRoutes
-          ),
-      }, */
       {
         path: RoutesUrl.STATIC,
         loadChildren: () =>
