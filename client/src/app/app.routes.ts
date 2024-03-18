@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router'
+import { provideEffects } from '@ngrx/effects'
+import { provideState } from '@ngrx/store'
+import { productEffects, productReducers } from './pages/product/store'
 import { RoutesUrl } from './routes.enum'
 
 export const routes: Routes = [
@@ -7,10 +10,10 @@ export const routes: Routes = [
     children: [
       {
         path: RoutesUrl.PRODUCT,
-        /* providers: [
+        providers: [
           provideState('product', productReducers),
           provideEffects(productEffects)
-        ], */
+        ],
         loadChildren: () =>
           import('./pages/product/product.routes').then((r): Routes => r.ProductRoutes),
       },

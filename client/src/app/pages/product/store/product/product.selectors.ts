@@ -1,16 +1,16 @@
+import { Product } from '@app/models/server'
 import { createSelector } from '@ngrx/store'
-import { selectProduct } from '..'
+import { ProductState, selectProduct } from '..'
 import { ProductListState } from './product.state'
-
 
 export const selectGetProductState = createSelector(
   selectProduct,
-  (state) => state.list
+  (state: ProductState): ProductListState => state.list
 );
 
 export const selectGetProduct = createSelector(
   selectGetProductState,
-  (state: ProductListState) => state.product
+  (state: ProductListState): Product | null => state.product
 );
 
 export const selectGetProductLoading = createSelector(
