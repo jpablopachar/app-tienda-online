@@ -1,1 +1,90 @@
-<p>new-product works!</p>,
+<div class="app-page">
+    <div class="app-page__header">
+        <h1>Crear Producto</h1>
+    </div>
+    <form [formGroup]="form" autocomplete="off" (submit)="onSubmit()">
+        <div class="app-page__content">
+            <div class="personal__photo">
+                <div class="photo">
+                    <app-user-photo
+                        class="photo__img"
+                        [photoURL]="form.controls['photoURL'].value"
+                    ></app-user-photo>
+                    <div
+                        class="app-a"
+                        appFilesUpload
+                        (changed)="onFilesChanged($event)"
+                    >
+                        Subir Imagen
+                    </div>
+                </div>
+            </div>
+            <app-form-field
+                label="Nombre"
+                [required]="true"
+                [control]="form.controls['name']"
+                [isInline]="false"
+            >
+                <app-input formControlName="name"></app-input>
+            </app-form-field>
+            <app-form-field
+                label="Descripcion"
+                [required]="true"
+                [control]="form.controls['description']"
+                [isInline]="false"
+            >
+                <app-input formControlName="description"></app-input>
+            </app-form-field>
+            <app-form-field
+                label="Stock"
+                [required]="true"
+                [control]="form.controls['stock']"
+                [isInline]="false"
+                [patternError]="regexErrors['number']"
+            >
+                <app-input formControlName="stock"></app-input>
+            </app-form-field>
+            <app-form-field
+                label="Precio"
+                [required]="true"
+                [control]="form.controls['price']"
+                [isInline]="false"
+                [patternError]="regexErrors['number']"
+            >
+                <app-input formControlName="price"></app-input>
+            </app-form-field>
+            <app-form-field
+                label="Categoría"
+                [required]="true"
+                [control]="form.controls['category']"
+                [isInline]="false"
+            >
+                <app-select
+                    formControlName="category"
+                    [items]="
+                        controls['category'].items
+                            ? controls['category'].items
+                            : []
+                    "
+                ></app-select>
+            </app-form-field>
+            <app-form-field
+                label="Marca"
+                [required]="true"
+                [control]="form.controls['brand']"
+                [isInline]="false"
+            >
+                <app-select
+                    formControlName="brand"
+                    [items]="
+                        controls['brand'].items ? controls['brand'].items : []
+                    "
+                ></app-select>
+            </app-form-field>
+        </div>
+        <div class="app-page__footer">
+            <app-button type="submit">Guardar</app-button>
+        </div>
+    </form>
+    <app-spinner *ngIf="$loading()"></app-spinner>
+</div>
