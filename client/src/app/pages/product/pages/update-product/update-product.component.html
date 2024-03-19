@@ -1,6 +1,6 @@
 <div class="app-page">
     <div class="app-page__header">
-        <h1>Nuevo Producto</h1>
+        <h1>Editar Producto</h1>
     </div>
     <form [formGroup]="form" autocomplete="off" (submit)="onSubmit()">
         <div class="app-page__content">
@@ -8,7 +8,7 @@
                 <div class="photo">
                     <app-user-photo
                         class="photo__img"
-                        [photoURL]="form.controls.photoURL.value"
+                        [photoURL]="form.controls['photoURL'].value"
                     ></app-user-photo>
                     <div
                         class="app-a"
@@ -22,65 +22,69 @@
             <app-form-field
                 label="Nombre"
                 [required]="true"
-                [control]="form.controls.nombre"
+                [control]="form.controls['name']"
                 [isInline]="false"
             >
-                <app-input formControlName="nombre"></app-input>
+                <app-input formControlName="name"></app-input>
             </app-form-field>
             <app-form-field
                 label="Descripcion"
                 [required]="true"
-                [control]="form.controls.descripcion"
+                [control]="form.controls['description']"
                 [isInline]="false"
             >
-                <app-input formControlName="descripcion"></app-input>
+                <app-input formControlName="description"></app-input>
             </app-form-field>
             <app-form-field
                 label="Stock"
                 [required]="true"
-                [control]="form.controls.stock"
+                [control]="form.controls['stock']"
                 [isInline]="false"
-                [patternError]="regexErrors.number"
+                [patternError]="regexErrors['number']"
             >
                 <app-input formControlName="stock"></app-input>
             </app-form-field>
             <app-form-field
                 label="Precio"
                 [required]="true"
-                [control]="form.controls.precio"
+                [control]="form.controls['price']"
                 [isInline]="false"
-                [patternError]="regexErrors.number"
+                [patternError]="regexErrors['number']"
             >
-                <app-input formControlName="precio"></app-input>
+                <app-input formControlName="price"></app-input>
             </app-form-field>
             <app-form-field
-                label="Categoria"
+                label="Categoría"
                 [required]="true"
-                [control]="form.controls.categoria"
+                [control]="form.controls['category']"
                 [isInline]="false"
             >
                 <app-select
-                    formControlName="categoria"
+                    formControlName="category"
                     [items]="
-                        controls.categoria.items ? controls.categoria.items : []
+                        controls['category'].items
+                            ? controls['category'].items
+                            : []
                     "
                 ></app-select>
             </app-form-field>
             <app-form-field
                 label="Marca"
                 [required]="true"
-                [control]="form.controls.marca"
+                [control]="form.controls['brand']"
                 [isInline]="false"
             >
                 <app-select
-                    formControlName="marca"
-                    [items]="controls.marca.items ? controls.marca.items : []"
+                    formControlName="brand"
+                    [items]="
+                        controls['brand'].items ? controls['brand'].items : []
+                    "
                 ></app-select>
             </app-form-field>
         </div>
         <div class="app-page__footer">
-            <app-button type="submit">Guardar</app-button>
+            <app-button type="submit">Actualizar</app-button>
         </div>
     </form>
-    <app-spinner *ngIf="loading$ | async"></app-spinner>
+    <app-spinner *ngIf="$loading()"></app-spinner>
 </div>

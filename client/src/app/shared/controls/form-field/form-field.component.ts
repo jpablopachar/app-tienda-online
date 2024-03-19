@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { AbstractControl } from '@angular/forms'
 
 @Component({
@@ -54,8 +54,7 @@ import { AbstractControl } from '@angular/forms'
       </div>
     </div>
   `,
-  styleUrl: './form-field.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './form-field.component.scss'
 })
 export class FormFieldComponent {
   @Input() label!: string;

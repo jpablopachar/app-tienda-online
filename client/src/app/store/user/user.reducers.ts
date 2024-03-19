@@ -6,7 +6,6 @@ import { UserState } from './user.state'
 const initialState: UserState = {
   entity: null,
   id: null,
-  email: null,
   loading: null,
   error: null,
 };
@@ -27,7 +26,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: action.user,
-        email: action.email,
+        id: action.id,
         error: null,
       })
     ),
@@ -37,7 +36,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: null,
-        email: null,
+        id: null,
         error: null,
       })
     ),
@@ -47,7 +46,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: null,
-        email: null,
+        id: null,
         error: action.error,
       })
     ),
@@ -57,7 +56,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: true,
         entity: null,
-        email: null,
+        id: null,
         error: null,
       })
     ),
@@ -67,7 +66,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: action.user,
-        email: action.email,
+        id: action.email,
         error: null,
       })
     ),
@@ -77,7 +76,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: null,
-        email: null,
+        id: null,
         error: action.error,
       })
     ),
@@ -87,7 +86,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: true,
         entity: null,
-        email: null,
+        id: null,
         error: null,
       })
     ),
@@ -97,7 +96,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: action.user,
-        email: action.email,
+        id: action.email,
         error: null,
       })
     ),
@@ -107,7 +106,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: null,
-        email: null,
+        id: null,
         error: action.error,
       })
     ),
@@ -129,7 +128,7 @@ export const userReducers: ActionReducer<UserState, Action> =
         ...state,
         loading: false,
         entity: null,
-        email: null,
+        id: null,
         error: action.error,
       })
     )

@@ -100,7 +100,7 @@ export const init$ = createEffect(
               console.log('Datos del usuario obtenidos del servidor => ', res);
             }),
             map((res: User) =>
-              initAuthorizedAction({ email: res.email, user: res || null })
+              initAuthorizedAction({ id: res.id, user: res || null })
             ),
             catchError((error) => of(initErrorAction(error)))
           );

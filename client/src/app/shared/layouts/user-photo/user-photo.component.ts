@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core'
+import { Component, Input, inject } from '@angular/core'
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
 
 @Component({
@@ -19,8 +19,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
       background: $secondary;
       background-size: cover;
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class UserPhotoComponent {
   @Input() photoURL!: string;

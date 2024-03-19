@@ -7,7 +7,7 @@ export const initAction = createAction(UserTypes.INIT);
 
 export const initAuthorizedAction = createAction(
   UserTypes.INIT_AUTHORIZED,
-  props<{ email: string; user: User | null }>()
+  props<{ id: string, user: User | null }>()
 );
 
 export const initUnauthorizedAction = createAction(UserTypes.INIT_UNAUTHORIZED);

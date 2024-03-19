@@ -29,18 +29,10 @@ import { User } from '@app/models/server'
         <a
           mat-list-item
           (click)="closeMenu()"
-          routerLink="inmueble/nuevo"
+          routerLink="product/new"
         >
           <mat-icon>add</mat-icon>
-          <span class="navegacion-list-label">Nuevo Inmueble</span>
-        </a>
-        <a
-          mat-list-item
-          (click)="closeMenu()"
-          routerLink="inmueble/list"
-        >
-          <mat-icon>add</mat-icon>
-          <span class="navegacion-list-label">Inmuebles</span>
+          <span class="navegacion-list-label">Nuevo Producto</span>
         </a>
         <a
           mat-list-item

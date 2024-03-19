@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common'
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -33,7 +32,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
