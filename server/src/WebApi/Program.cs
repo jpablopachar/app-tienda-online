@@ -4,9 +4,11 @@ using BusinessLogic.Data;
 using BusinessLogic.Logic;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Dtos;
 using WebApi.Middlewares;
@@ -23,7 +25,7 @@ builder.Services.AddScoped(typeof(IGenericAuthRepository<>), typeof(GenericAuthR
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+// builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var builderIdentity = builder.Services.AddIdentityCore<User>();
 
@@ -53,7 +55,7 @@ IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 // Add services to the container.
-// builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
