@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  WritableSignal,
   inject
 } from '@angular/core'
 import { Storage, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
@@ -54,18 +53,23 @@ export class UploadComponent implements OnInit, OnDestroy {
 
   @Output() completed: EventEmitter<string>;
 
+  // private _sanitizer: DomSanitizer;
   private _storage: Storage;
-  private _destroy;
+  private _destroy: Subject<void>;
 
   public task!: UploadTask;
   public percentage!: Observable<number>;
   public snapshot$!: Observable<UploadTaskSnapshot | undefined>;
-  public downloadURL!: WritableSignal<string>;
+
+  public downloadURL!: string | null;
 
   constructor() {
     this.completed = new EventEmitter<string>();
     this._destroy = new Subject<void>();
 
+    // this.downloadURL = signal(null);
+
+    // this._sanitizer = inject(DomSanitizer);
     this._storage = inject(Storage);
   }
 
@@ -87,16 +91,26 @@ export class UploadComponent implements OnInit, OnDestroy {
     // this.task = this._storage.upload(path, this.file);
     this.task = uploadBytesResumable(storageRef, this.file);
 
-    this.task.on('state_changed', (snapshot) => {
+    this.task.on('state_changed', (snapshot: UploadTaskSnapshot): void => {
       const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+      this.snapshot$ = of(snapshot);
       this.percentage = of(progress);
       console.log('Progreso: ', progress);
     }, (error) => {
       console.error('Error: ', error);
     }, async () => {
       console.log('Completado');
-      const url = await getDownloadURL(storageRef);
+      const url: string = await getDownloadURL(storageRef);
+
+      // const img = this._sanitizer.bypassSecurityTrustUrl(url);
+      // this.downloadURL.set(url);
+      this.downloadURL = url;
+
+      this.completed.emit(url);
       console.log('URL del archivo: ', url);
+      // console.log('URL del archivo 2: ', img);
+      
     })
     /* this.percentage$ = this.task.percentageChanges();
     this.snapshot$ = this.task.snapshotChanges() as Observable<
