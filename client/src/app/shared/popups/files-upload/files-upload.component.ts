@@ -3,8 +3,7 @@ import {
   Component,
   Inject,
   WritableSignal,
-  inject,
-  signal
+  inject
 } from '@angular/core'
 import {
   MAT_DIALOG_DATA,
@@ -28,8 +27,8 @@ export interface DialogData {
 })
 export class FilesUploadComponent {
   public isHovering?: WritableSignal<boolean>;
-  public files: WritableSignal<File[]> = signal([]);
-  public filesUrls: WritableSignal<string[]> = signal([]);
+  public files: File[];
+  public filesUrls: string[];
   public imageFile!: File | undefined;
   public isError!: boolean;
 
@@ -37,28 +36,33 @@ export class FilesUploadComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
     this._dialogRef = inject(MatDialogRef<FilesUploadComponent>);
+
+    this.files = [];
+    this.filesUrls = [];
   }
 
-  toggleHover(event: boolean): void {
+  public toggleHover(event: boolean): void {
     this.isHovering?.set(event);
   }
 
-  onDrop(files: FileList): void {
+  public onDrop(files: FileList): void {
     this._dropGeneral(files);
   }
 
-  onDropFile(event: FileList | any): void {
+  public onDropFile(event: FileList | any): void {
     this._dropGeneral(event.target.files);
   }
 
-  onUploadComplete(url: string): void {
-    this.filesUrls.update((urls: string[]): string[] => [...urls, url]);
+  public onUploadComplete(url: string): void {
+    this.filesUrls.push(url);
   }
 
   onComplete(): void {
     const res: string | string[] = this.data.multiple
-      ? this.filesUrls()
-      : this.filesUrls()[0];
+      ? this.filesUrls
+      : this.filesUrls[0];
+
+    console.log('Result', res);
 
     this._dialogRef.close(res);
   }
@@ -70,7 +74,7 @@ export class FilesUploadComponent {
   onCrop(file: File): void {
     this.imageFile = undefined
 
-    this.files.update((files: File[]): File[] => [...files, file]);
+    this.files.push(file);
   }
 
   private _dropGeneral(files: FileList): void {
@@ -83,7 +87,7 @@ export class FilesUploadComponent {
     }
 
     for (let i = 0; i < files.length; i++) {
-      this.files.update((currentFile: File[]): File[] => [...currentFile, files.item(i) as File]);
+      this.files.push(files.item(i) as File);
     }
 
     console.log(files);

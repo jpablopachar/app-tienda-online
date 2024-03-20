@@ -217,6 +217,7 @@ export class UpdateProductComponent implements OnInit {
 
   public onFilesChanged(url: any): void {
     if (url) {
+      console.log('url', url);
       this.form.controls['photoURL'].setValue(url);
     }
   }

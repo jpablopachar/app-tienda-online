@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common'
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  inject
+  WritableSignal,
+  inject,
+  signal
 } from '@angular/core'
 import { Storage, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
 import { Observable, Subject, of } from 'rxjs'
@@ -54,6 +57,7 @@ export class UploadComponent implements OnInit, OnDestroy {
   @Output() completed: EventEmitter<string>;
 
   // private _sanitizer: DomSanitizer;
+  private _cdr: ChangeDetectorRef;
   private _storage: Storage;
   private _destroy: Subject<void>;
 
@@ -61,15 +65,17 @@ export class UploadComponent implements OnInit, OnDestroy {
   public percentage!: Observable<number>;
   public snapshot$!: Observable<UploadTaskSnapshot | undefined>;
 
-  public downloadURL!: string | null;
+  public $downloadURL!: WritableSignal<string | null>;
 
   constructor() {
     this.completed = new EventEmitter<string>();
     this._destroy = new Subject<void>();
 
-    // this.downloadURL = signal(null);
+    this.$downloadURL = signal(null);
+    // this.downloadURL = null;
 
     // this._sanitizer = inject(DomSanitizer);
+    this._cdr = inject(ChangeDetectorRef);
     this._storage = inject(Storage);
   }
 
@@ -104,10 +110,11 @@ export class UploadComponent implements OnInit, OnDestroy {
       const url: string = await getDownloadURL(storageRef);
 
       // const img = this._sanitizer.bypassSecurityTrustUrl(url);
-      // this.downloadURL.set(url);
-      this.downloadURL = url;
+      this.$downloadURL.set(url);
+      this._cdr.detectChanges();
+      // this.$downloadURL = url;
 
-      this.completed.emit(url);
+      this.completed.emit(this.$downloadURL() as string);
       console.log('URL del archivo: ', url);
       // console.log('URL del archivo 2: ', img);
       
