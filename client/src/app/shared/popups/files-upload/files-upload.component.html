@@ -24,14 +24,14 @@
                     </label>
                 </div>
             </div>
-            @if (isError()) {
+            @if (isError) {
                 <div class="error">Seleccione un archivo</div>
             }
         }
 
-        @if (imageFile()) {
+        @if (imageFile) {
             <app-cropper
-                [imageFile]="imageFile()"
+                [imageFile]="imageFile"
                 (changed)="onCrop($event)"
             ></app-cropper>
         }
@@ -45,7 +45,7 @@
             }
         }
     </div>
-    @if (!imageFile()) {
+    @if (!imageFile) {
         <div class="files-upload__footer">
             @if (!filesUrls().length) {
                 <button

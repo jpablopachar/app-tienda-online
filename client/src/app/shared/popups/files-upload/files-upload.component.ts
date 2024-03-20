@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common'
 import {
-  ChangeDetectionStrategy,
   Component,
   Inject,
   WritableSignal,
   inject,
-  signal,
+  signal
 } from '@angular/core'
 import {
   MAT_DIALOG_DATA,
@@ -25,14 +24,14 @@ export interface DialogData {
   imports: [CommonModule, DropZoneDirective, CropperComponent, UploadComponent],
   templateUrl: './files-upload.component.html',
   styleUrl: './files-upload.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilesUploadComponent {
   public isHovering?: WritableSignal<boolean>;
   public files: WritableSignal<File[]> = signal([]);
   public filesUrls: WritableSignal<string[]> = signal([]);
-  public imageFile!: WritableSignal<File | undefined>;
-  public isError!: WritableSignal<boolean>;
+  public imageFile!: File | undefined;
+  public isError!: boolean;
 
   private _dialogRef: MatDialogRef<FilesUploadComponent>;
 
@@ -69,12 +68,24 @@ export class FilesUploadComponent {
   }
 
   onCrop(file: File): void {
-    this.imageFile.set(undefined);
+    this.imageFile = undefined
 
     this.files.update((files: File[]): File[] => [...files, file]);
   }
 
   private _dropGeneral(files: FileList): void {
+    this.isError = false;
+
+    if (this.data.crop && files.length === 1 && files.item(0)?.type.split('/')[0] === 'image') {
+      this.imageFile = files.item(0) as File;
+
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      this.files.update((currentFile: File[]): File[] => [...currentFile, files.item(i) as File]);
+    }
+
     console.log(files);
   }
 }

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common'
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -8,15 +7,10 @@ import {
   OnInit,
   Output,
   WritableSignal,
-  inject,
+  inject
 } from '@angular/core'
-import {
-  AngularFireStorage,
-  AngularFireStorageReference,
-  AngularFireUploadTask,
-} from '@angular/fire/compat/storage'
-import { UploadTaskSnapshot } from '@angular/fire/storage'
-import { Observable, Subject, finalize, lastValueFrom, takeUntil } from 'rxjs'
+import { Storage, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
+import { Observable, Subject, of } from 'rxjs'
 import { FileSizePipe } from '../../pipes'
 
 @Component({
@@ -53,18 +47,18 @@ import { FileSizePipe } from '../../pipes'
 
     .app-a { margin-right: 0; }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadComponent implements OnInit, OnDestroy {
   @Input() file!: File;
 
   @Output() completed: EventEmitter<string>;
 
-  private _storage: AngularFireStorage;
+  private _storage: Storage;
   private _destroy;
 
-  public task!: AngularFireUploadTask;
-  public percentage$!: Observable<number | undefined>;
+  public task!: UploadTask;
+  public percentage!: Observable<number>;
   public snapshot$!: Observable<UploadTaskSnapshot | undefined>;
   public downloadURL!: WritableSignal<string>;
 
@@ -72,7 +66,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.completed = new EventEmitter<string>();
     this._destroy = new Subject<void>();
 
-    this._storage = inject(AngularFireStorage);
+    this._storage = inject(Storage);
   }
 
   ngOnInit(): void {
@@ -88,10 +82,23 @@ export class UploadComponent implements OnInit, OnDestroy {
     const path = `${this.file.type.split('/')[0]}/${Date.now()}_${
       this.file.name
     }`;
-    const storageRef: AngularFireStorageReference = this._storage.ref(path);
+    const storageRef: StorageReference = ref(this._storage, path);
 
-    this.task = this._storage.upload(path, this.file);
-    this.percentage$ = this.task.percentageChanges();
+    // this.task = this._storage.upload(path, this.file);
+    this.task = uploadBytesResumable(storageRef, this.file);
+
+    this.task.on('state_changed', (snapshot) => {
+      const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      this.percentage = of(progress);
+      console.log('Progreso: ', progress);
+    }, (error) => {
+      console.error('Error: ', error);
+    }, async () => {
+      console.log('Completado');
+      const url = await getDownloadURL(storageRef);
+      console.log('URL del archivo: ', url);
+    })
+    /* this.percentage$ = this.task.percentageChanges();
     this.snapshot$ = this.task.snapshotChanges() as Observable<
       UploadTaskSnapshot | undefined
     >;
@@ -108,6 +115,6 @@ export class UploadComponent implements OnInit, OnDestroy {
           this.completed.emit(this.downloadURL());
         })
       )
-      .subscribe();
+      .subscribe(); */
   }
 }

@@ -21,6 +21,7 @@ import { Product } from '@app/models/server'
 import {
   ButtonComponent,
   ControlEntities,
+  FilesUploadDirective,
   FormFieldComponent,
   InputComponent,
   SelectComponent,
@@ -46,6 +47,7 @@ import { MapperService } from './services'
     ReactiveFormsModule,
     UserPhotoComponent,
     FilesUploadComponent,
+    FilesUploadDirective,
     FormFieldComponent,
     InputComponent,
     SelectComponent,
