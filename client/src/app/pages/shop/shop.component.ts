@@ -65,7 +65,7 @@ export class ShopComponent implements OnInit {
   public dictionaries$!: Observable<Dictionaries | null>;
   public pagination$!: Observable<Pagination>;
 
-  public params: HttpParams;
+  private _params: HttpParams;
 
   private _storeRoot: Store<fromRoot.State>;
   private _store: Store<fromProducts.ProductsState>;
@@ -74,7 +74,7 @@ export class ShopComponent implements OnInit {
     this._storeRoot = inject(Store);
     this._store = inject(Store);
 
-    this.params = new HttpParams();
+    this._params = new HttpParams();
   }
 
   ngOnInit(): void {
@@ -86,13 +86,13 @@ export class ShopComponent implements OnInit {
 
     this.dictionaries$ = this._storeRoot.select(fromDictionaries.selectGetDictionaries);
 
-    this.params = this.params.set('pageIndex', 1);
-    this.params = this.params.set('pageSize', 10);
+    this._params = this._params.set('pageIndex', 1);
+    this._params = this._params.set('pageSize', 10);
 
     this._store.dispatch(
       fromProducts.getProductsAction({
-        paginationRequest: this.params,
-        paramsUrl: this.params.toString(),
+        paginationRequest: this._params,
+        paramsUrl: this._params.toString(),
       })
     );
   }

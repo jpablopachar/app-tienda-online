@@ -63,7 +63,7 @@ import * as fromProducts from '../../store/products'
 export class SearchComponent implements OnInit, OnDestroy {
   public form: FormGroup;
 
-  private _$paginatorParams!: HttpParams | null | undefined;
+  private _paginatorParams!: HttpParams | null | undefined;
 
   private _destroy: Subject<any>;
   private _formBuilder: FormBuilder;
@@ -85,7 +85,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroy))
       .pipe(select(fromProducts.selectPaginationRequest))
       .subscribe((data: HttpParams | null): void => {
-        this._$paginatorParams = data;
+        this._paginatorParams = data;
       });
 
   }
@@ -93,14 +93,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   public onSubmit(): void {
     const value = this.form.value;
 
-    this._$paginatorParams = this._$paginatorParams?.delete('search');
+    this._paginatorParams = this._paginatorParams?.delete('search');
 
-    this._$paginatorParams = this._$paginatorParams?.delete('pageIndex');
+    this._paginatorParams = this._paginatorParams?.delete('pageIndex');
 
-    this._$paginatorParams = this._$paginatorParams?.set('pageIndex', 1);
+    this._paginatorParams = this._paginatorParams?.set('pageIndex', 1);
 
     if (value.search !== null && value.search.trim() !== '') {
-      this._$paginatorParams = this._$paginatorParams?.set(
+      this._paginatorParams = this._paginatorParams?.set(
         'search',
         value.search.trim()
       );
@@ -108,8 +108,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this._store.dispatch(
       fromProducts.getProductsAction({
-        paginationRequest: this._$paginatorParams as HttpParams,
-        paramsUrl: this._$paginatorParams?.toString() as string,
+        paginationRequest: this._paginatorParams as HttpParams,
+        paramsUrl: this._paginatorParams?.toString() as string,
       })
     );
   }

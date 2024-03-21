@@ -78,6 +78,11 @@ export class PaginatorComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngOnDestroy(): void {
+    this._destroy.next(null);
+    this._destroy.complete();
+  }
+
   public paginatorEvent(event: PageEvent): void {
     this._paginatorParams = this._paginatorParams!.delete('pageIndex');
     this._paginatorParams = this._paginatorParams.delete('pageSize');
@@ -97,10 +102,5 @@ export class PaginatorComponent implements OnInit, OnDestroy {
         paramsUrl: this._paginatorParams.toString(),
       })
     );
-  }
-
-  ngOnDestroy(): void {
-    this._destroy.next(null);
-    this._destroy.complete();
   }
 }
