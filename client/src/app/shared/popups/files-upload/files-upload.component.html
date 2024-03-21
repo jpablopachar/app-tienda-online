@@ -3,12 +3,12 @@
         <h3>Files uploading</h3>
     </div>
     <div class="files-upload__content">
-        @if (!files.length) {
+        @if (!$files().length) {
             <div
                 class="dropzone"
                 appDropZone
                 (hovered)="toggleHover($event)"
-                [class.dropzone__hovered]="isHovering"
+                [class.dropzone__hovered]="$isHovering()"
                 (dropped)="onDrop($event)"
             >
                 <div class="dropzone__label">Deja tus archivos aquí</div>
@@ -24,20 +24,20 @@
                     </label>
                 </div>
             </div>
-            @if (isError) {
+            @if ($isError()) {
                 <div class="error">Seleccione un archivo</div>
             }
         }
 
-        @if (imageFile) {
+        @if ($imageFile()) {
             <app-cropper
-                [imageFile]="imageFile"
+                [imageFile]="$imageFile()"
                 (changed)="onCrop($event)"
             ></app-cropper>
         }
 
-        @if (files) {
-            @for (file of files; track file.name) {
+        @if ($files()) {
+            @for (file of $files(); track file.name) {
                 <app-upload
                     [file]="file"
                     (completed)="onUploadComplete($event)"
@@ -45,9 +45,9 @@
             }
         }
     </div>
-    @if (!imageFile) {
+    @if (!$imageFile()) {
         <div class="files-upload__footer">
-            @if (!filesUrls.length) {
+            @if (!$filesUrls().length) {
                 <button
                     class="app-button"
                     (click)="onClose()"
@@ -56,7 +56,7 @@
                 </button>
             }
 
-            @if (filesUrls.length) {
+            @if ($filesUrls().length) {
                 <button
                     class="app-button"
                     (click)="onComplete()"

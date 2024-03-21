@@ -36,18 +36,18 @@ export class CropperComponent {
 
   @Output() changed: EventEmitter<File>;
 
-  public croppedImage!: string;
+  private _croppedImage!: string;
 
   constructor() {
     this.changed = new EventEmitter<File>();
   }
 
   public imageCropped(event: ImageCroppedEvent): void {
-    this.croppedImage = event.base64 as string;
+    this._croppedImage = event.base64 as string;
   }
 
   public onCrop(): void {
-    const file = dataURLtoFile(this.croppedImage, this.imageFile);
+    const file = dataURLtoFile(this._croppedImage, this.imageFile);
 
     this.changed.emit(file);
   }
