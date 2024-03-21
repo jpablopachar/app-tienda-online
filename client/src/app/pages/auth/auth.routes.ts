@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router'
+import { unAuthGuardCanActivate } from '@app/guards'
 import { AuthRoutesUrl } from './auth.routes.enum'
 
 export const AuthRoutes: Routes = [
@@ -8,6 +9,7 @@ export const AuthRoutes: Routes = [
       import('./pages/login/login.component').then(
         (c) => c.LoginComponent
       ),
+    canActivate: [unAuthGuardCanActivate],
   },
   {
     path: AuthRoutesUrl.REGISTRATION,
@@ -15,6 +17,7 @@ export const AuthRoutes: Routes = [
       import('./pages/registration/registration.component').then(
         (c) => c.RegistrationComponent
       ),
+    canActivate: [unAuthGuardCanActivate],
   },
   {
     path: '**',
