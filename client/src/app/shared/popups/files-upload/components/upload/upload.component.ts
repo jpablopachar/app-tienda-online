@@ -11,7 +11,7 @@ import {
   inject,
   signal
 } from '@angular/core'
-import { Storage, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
+import { Storage, StorageError, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
 import { Observable, Subject, of } from 'rxjs'
 import { FileSizePipe } from '../../pipes'
 
@@ -48,15 +48,13 @@ import { FileSizePipe } from '../../pipes'
     }
 
     .app-a { margin-right: 0; }
-  `,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class UploadComponent implements OnInit, OnDestroy {
   @Input() file!: File;
 
   @Output() completed: EventEmitter<string>;
 
-  // private _sanitizer: DomSanitizer;
   private _cdr: ChangeDetectorRef;
   private _storage: Storage;
   private _destroy: Subject<void>;
@@ -72,9 +70,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     this._destroy = new Subject<void>();
 
     this.$downloadURL = signal(null);
-    // this.downloadURL = null;
 
-    // this._sanitizer = inject(DomSanitizer);
     this._cdr = inject(ChangeDetectorRef);
     this._storage = inject(Storage);
   }
@@ -94,7 +90,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     }`;
     const storageRef: StorageReference = ref(this._storage, path);
 
-    // this.task = this._storage.upload(path, this.file);
     this.task = uploadBytesResumable(storageRef, this.file);
 
     this.task.on('state_changed', (snapshot: UploadTaskSnapshot): void => {
@@ -102,40 +97,18 @@ export class UploadComponent implements OnInit, OnDestroy {
 
       this.snapshot$ = of(snapshot);
       this.percentage = of(progress);
-      console.log('Progreso: ', progress);
-    }, (error) => {
-      console.error('Error: ', error);
-    }, async () => {
-      console.log('Completado');
+
+      this._cdr.detectChanges();
+    }, (error: StorageError): void => {
+      console.error('Se ha producido un error: ', error);
+    }, async (): Promise<void> => {
       const url: string = await getDownloadURL(storageRef);
 
-      // const img = this._sanitizer.bypassSecurityTrustUrl(url);
       this.$downloadURL.set(url);
       this._cdr.detectChanges();
-      // this.$downloadURL = url;
 
       this.completed.emit(this.$downloadURL() as string);
-      console.log('URL del archivo: ', url);
-      // console.log('URL del archivo 2: ', img);
       
     })
-    /* this.percentage$ = this.task.percentageChanges();
-    this.snapshot$ = this.task.snapshotChanges() as Observable<
-      UploadTaskSnapshot | undefined
-    >;
-
-    this.snapshot$
-      .pipe(
-        takeUntil(this._destroy),
-        finalize(async (): Promise<void> => {
-          const storageRefObservable$: Observable<any> =
-            storageRef.getDownloadURL();
-
-          this.downloadURL.set(await lastValueFrom(storageRefObservable$));
-
-          this.completed.emit(this.downloadURL());
-        })
-      )
-      .subscribe(); */
   }
 }

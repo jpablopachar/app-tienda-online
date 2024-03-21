@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
+  ChangeDetectorRef,
   Component,
   Inject,
   WritableSignal,
@@ -22,8 +23,7 @@ export interface DialogData {
   standalone: true,
   imports: [CommonModule, DropZoneDirective, CropperComponent, UploadComponent],
   templateUrl: './files-upload.component.html',
-  styleUrl: './files-upload.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './files-upload.component.scss'
 })
 export class FilesUploadComponent {
   public isHovering?: WritableSignal<boolean>;
@@ -33,9 +33,11 @@ export class FilesUploadComponent {
   public isError!: boolean;
 
   private _dialogRef: MatDialogRef<FilesUploadComponent>;
+  private _cdr: ChangeDetectorRef;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
     this._dialogRef = inject(MatDialogRef<FilesUploadComponent>);
+    this._cdr = inject(ChangeDetectorRef);
 
     this.files = [];
     this.filesUrls = [];
@@ -55,23 +57,23 @@ export class FilesUploadComponent {
 
   public onUploadComplete(url: string): void {
     this.filesUrls.push(url);
+
+    this._cdr.detectChanges();
   }
 
-  onComplete(): void {
+  public onComplete(): void {
     const res: string | string[] = this.data.multiple
       ? this.filesUrls
       : this.filesUrls[0];
 
-    console.log('Result', res);
-
     this._dialogRef.close(res);
   }
 
-  onClose(): void {
+  public onClose(): void {
     this._dialogRef.close();
   }
 
-  onCrop(file: File): void {
+  public onCrop(file: File): void {
     this.imageFile = undefined
 
     this.files.push(file);
@@ -79,6 +81,12 @@ export class FilesUploadComponent {
 
   private _dropGeneral(files: FileList): void {
     this.isError = false;
+
+    if (this.data.crop && files.length > 1) {
+      this.isError = true;
+
+      return;
+    }
 
     if (this.data.crop && files.length === 1 && files.item(0)?.type.split('/')[0] === 'image') {
       this.imageFile = files.item(0) as File;
@@ -89,7 +97,5 @@ export class FilesUploadComponent {
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i) as File);
     }
-
-    console.log(files);
   }
 }

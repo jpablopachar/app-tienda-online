@@ -6,7 +6,7 @@ import {
   OnInit,
   WritableSignal,
   inject,
-  signal,
+  signal
 } from '@angular/core'
 import {
   FormBuilder,
@@ -160,8 +160,6 @@ export class UpdateProductComponent implements OnInit {
         if (productForm.name) {
           const value: ProductForm = productForm;
 
-          console.log('value', value);
-
           this.form.patchValue(value);
           this.form.updateValueAndValidity();
           this._cdr.detectChanges();
@@ -217,8 +215,9 @@ export class UpdateProductComponent implements OnInit {
 
   public onFilesChanged(url: any): void {
     if (url) {
-      console.log('url', url);
       this.form.controls['photoURL'].setValue(url);
+
+      this._cdr.detectChanges();
     }
   }
 }
