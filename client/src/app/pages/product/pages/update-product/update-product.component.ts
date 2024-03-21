@@ -35,6 +35,7 @@ import { FilesUploadComponent } from '@app/shared/popups/files-upload/files-uplo
 import * as fromRoot from '@app/store'
 import * as fromDictionaries from '@app/store/dictionary'
 import { Store } from '@ngrx/store'
+import { Observable } from 'rxjs'
 import * as fromProduct from '../../store/product'
 import * as fromProductForm from '../../store/product-form'
 import { MapperService } from './services'
@@ -58,7 +59,8 @@ import { MapperService } from './services'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpdateProductComponent implements OnInit {
-  public $loading: WritableSignal<boolean | null>;
+  public loading$!: Observable<boolean | null>;
+
   public $dictionaries: WritableSignal<null>;
 
   public form: FormGroup;
@@ -82,7 +84,6 @@ export class UpdateProductComponent implements OnInit {
     this._router = inject(ActivatedRoute);
     this._mapperService = inject(MapperService);
 
-    this.$loading = signal(null);
     this.$dictionaries = signal(null);
 
     this.form = this._formBuilder.group({
@@ -123,6 +124,8 @@ export class UpdateProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading$ = this._store.select(fromProduct.selectGetProductLoading);
+
     this._store
       .select(fromDictionaries.selectGetDictionaries)
       .subscribe((data: Dictionaries | null): void => {
@@ -186,9 +189,7 @@ export class UpdateProductComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.$loading.set(
-        this._store.selectSignal(fromProduct.selectGetProductLoading)()
-      );
+      this.loading$ = this._store.select(fromProduct.selectGetProductLoading);
 
       this._router.params.subscribe((param: Params): void => {
         const value = this.form.value;
