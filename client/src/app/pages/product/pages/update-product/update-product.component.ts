@@ -65,7 +65,6 @@ export class UpdateProductComponent implements OnInit {
 
   public form: FormGroup;
   public regexErrors: { [key: string]: string };
-
   public controls!: ControlEntities;
 
   private _store: Store<fromRoot.State>;

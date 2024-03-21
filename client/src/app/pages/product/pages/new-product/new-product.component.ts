@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   WritableSignal,
@@ -18,6 +19,7 @@ import { Dictionaries } from '@app/models/client/dictionary'
 import {
   ButtonComponent,
   ControlEntities,
+  FilesUploadDirective,
   FormFieldComponent,
   InputComponent,
   SelectComponent,
@@ -31,6 +33,7 @@ import { FilesUploadComponent } from '@app/shared/popups/files-upload/files-uplo
 import * as fromRoot from '@app/store'
 import * as fromDictionaries from '@app/store/dictionary'
 import { Store } from '@ngrx/store'
+import { Observable } from 'rxjs'
 import * as fromProduct from '../../store/product'
 
 @Component({
@@ -41,6 +44,7 @@ import * as fromProduct from '../../store/product'
     ReactiveFormsModule,
     UserPhotoComponent,
     FilesUploadComponent,
+    FilesUploadDirective,
     FormFieldComponent,
     InputComponent,
     SelectComponent,
@@ -51,16 +55,18 @@ import * as fromProduct from '../../store/product'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewProductComponent implements OnInit {
-  public $loading: WritableSignal<boolean | null>;
+  // public loading$: WritableSignal<boolean | null>;
+  public loading$!: Observable<boolean | null>;
+
   public $dictionaries: WritableSignal<null>;
 
   public form: FormGroup;
   public regexErrors: { [key: string]: string };
-
   public controls!: ControlEntities;
 
   private _store: Store<fromRoot.State>;
   private _formBuilder: FormBuilder;
+  private _cdr: ChangeDetectorRef;
 
   private _categories!: ControlItem[];
   private _brand!: ControlItem[];
@@ -68,8 +74,8 @@ export class NewProductComponent implements OnInit {
   constructor() {
     this._store = inject(Store);
     this._formBuilder = inject(FormBuilder);
+    this._cdr = inject(ChangeDetectorRef);
 
-    this.$loading = signal(null);
     this.$dictionaries = signal(null);
 
     this.form = this._formBuilder.group({
@@ -144,9 +150,7 @@ export class NewProductComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.$loading.set(
-        this._store.selectSignal(fromProduct.selectGetProductLoading)()
-      );
+      this.loading$ = this._store.select(fromProduct.selectGetProductLoading);
 
       const value = this.form.value;
 
@@ -169,6 +173,8 @@ export class NewProductComponent implements OnInit {
   public onFilesChanged(url: any): void {
     if (url) {
       this.form.controls['photoURL'].setValue(url);
+
+      this._cdr.detectChanges();
     }
   }
 }

@@ -86,5 +86,7 @@
             <app-button type="submit">Guardar</app-button>
         </div>
     </form>
-    <app-spinner *ngIf="$loading()"></app-spinner>
+    @if (loading$ | async) {
+        <app-spinner></app-spinner>
+    }
 </div>
