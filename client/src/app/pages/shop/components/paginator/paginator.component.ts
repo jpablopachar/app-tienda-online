@@ -9,7 +9,7 @@ import {
   ViewChild,
   WritableSignal,
   inject,
-  signal,
+  signal
 } from '@angular/core'
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator'
 import { Pagination } from '@app/models/server'
@@ -70,7 +70,7 @@ export class PaginatorComponent implements OnInit, OnDestroy {
       .pipe(select(fromProducts.selectGetShop))
       .subscribe((data: Pagination | null): void => {
         this.pageSize.set(data?.pageSize as number);
-        this.pageCount.set(data?.pageCount as number);
+        this.pageCount.set(data?.count as number);
 
         if (this.matPaginator) {
           this.matPaginator.pageIndex = data?.pageIndex as number;
@@ -84,7 +84,7 @@ export class PaginatorComponent implements OnInit, OnDestroy {
 
     this._paginatorParams = this._paginatorParams.set(
       'pageIndex',
-      event.pageIndex + 1
+      event.pageIndex
     );
     this._paginatorParams = this._paginatorParams.set(
       'pageSize',

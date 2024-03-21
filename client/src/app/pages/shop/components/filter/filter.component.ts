@@ -15,6 +15,7 @@ import { MatListModule, MatSelectionListChange } from '@angular/material/list'
 import { ControlItem } from '@app/models/client'
 import { Dictionaries } from '@app/models/client/dictionary'
 import {
+  ButtonComponent,
   ControlEntities,
   FormFieldComponent,
   SelectComponent,
@@ -33,6 +34,7 @@ import * as fromProducts from '../../store/products'
     FormFieldComponent,
     MatListModule,
     SelectComponent,
+    ButtonComponent
   ],
   templateUrl: './filter.component.html',
   styles: `
@@ -43,6 +45,11 @@ import * as fromProducts from '../../store/products'
       margin-bottom: 16px;
       display: flex;
       flex-direction: column;
+    }
+
+    .clear {
+      display: flex;
+      justify-content: end;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -142,6 +149,20 @@ export class FilterComponent implements OnInit, OnDestroy {
       'brand',
       this.form.get('brand')?.value
     );
+
+    this._store.dispatch(
+      fromProducts.getProductsAction({
+        paginationRequest: this._paginatorParams as HttpParams,
+        paramsUrl: this._paginatorParams?.toString() as string,
+      })
+    );
+  }
+
+  public onClear(): void {
+    this._paginatorParams = this._paginatorParams?.delete('category').delete('brand').delete('search').delete('sort');
+
+    // this.form.controls['sort'].setValue(null);
+    this.form.patchValue({ sort: null, category: null, brand: null });
 
     this._store.dispatch(
       fromProducts.getProductsAction({

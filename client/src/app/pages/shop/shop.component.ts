@@ -4,9 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  WritableSignal,
-  inject,
-  signal,
+  inject
 } from '@angular/core'
 import { Dictionaries } from '@app/models/client/dictionary'
 import { Pagination } from '@app/models/server'
@@ -37,8 +35,8 @@ import * as fromProducts from './store/products'
   template: `
     <div class="container">
       <div class="filter">
-        @if ($dictionaries()) {
-        <app-filter [dictionaries]="$dictionaries()"></app-filter>
+        @if (dictionaries$ | async; as dictionaries) {
+          <app-filter [dictionaries]="dictionaries"></app-filter>
         }
       </div>
       <div class="pagination">
@@ -55,17 +53,16 @@ import * as fromProducts from './store/products'
         }
       </div>
     </div>
-    @if ($loading()) {
-    <app-spinner></app-spinner>
+    @if (loading$ | async) {
+      <app-spinner></app-spinner>
     }
   `,
   styleUrls: ['./shop.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopComponent implements OnInit {
-  public $loading: WritableSignal<boolean | null>;
-  public $dictionaries: WritableSignal<Dictionaries | null>;
-
+  public loading$!: Observable<boolean | null>;
+  public dictionaries$!: Observable<Dictionaries | null>;
   public pagination$!: Observable<Pagination>;
 
   public params: HttpParams;
@@ -77,24 +74,17 @@ export class ShopComponent implements OnInit {
     this._storeRoot = inject(Store);
     this._store = inject(Store);
 
-    this.$loading = signal(null);
-    this.$dictionaries = signal(null);
-
     this.params = new HttpParams();
   }
 
   ngOnInit(): void {
-    this.$loading.set(
-      this._store.selectSignal(fromProducts.selectGetShopLoading)()
-    );
+    this.loading$ = this._store.select(fromProducts.selectGetShopLoading);
 
     this.pagination$ = this._store.select(
       fromProducts.selectGetShop
     ) as Observable<Pagination>;
 
-    this.$dictionaries.set(
-      this._storeRoot.selectSignal(fromDictionaries.selectGetDictionaries)()
-    );
+    this.dictionaries$ = this._storeRoot.select(fromDictionaries.selectGetDictionaries);
 
     this.params = this.params.set('pageIndex', 1);
     this.params = this.params.set('pageSize', 10);
