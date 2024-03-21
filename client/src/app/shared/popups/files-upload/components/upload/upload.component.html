@@ -2,13 +2,13 @@
     {{ file.name }}
     <progress
         class="upload__progress"
-        [value]="(percentage | async) || 0"
+        [value]="($percentage() || 0)"
         max="100"
     ></progress>
-    @if (snapshot$ | async; as snapshot) {
+    @if ($snapshot()) {
         <div class="upload__info">
-            {{ snapshot.bytesTransferred | appFileSize }} of
-            {{ snapshot.totalBytes | appFileSize }}
+            {{ $snapshot()?.bytesTransferred | appFileSize }} of
+            {{ $snapshot()?.totalBytes | appFileSize }}
         </div>
         @if ($downloadURL()) {
             <a class="app-a" [href]="$downloadURL()" target="_blank" rel="noopener"
@@ -16,23 +16,23 @@
             >
         } @else {
             <button
-                (click)="task.pause()"
+                (click)="$task()?.pause()"
                 class="button"
-                [disabled]="!(snapshot?.state === 'running')"
+                [disabled]="!($snapshot()?.state === 'running')"
             >
                 Pausa
             </button>
             <button
-                (click)="task.cancel()"
+                (click)="$task()?.cancel()"
                 class="button"
-                [disabled]="!(snapshot?.state === 'running')"
+                [disabled]="!($snapshot()?.state === 'running')"
             >
                 Cancelar
             </button>
             <button
-                (click)="task.resume()"
+                (click)="$task()?.resume()"
                 class="button"
-                [disabled]="!(snapshot?.state === 'paused')"
+                [disabled]="!($snapshot()?.state === 'paused')"
             >
                 Continuar
             </button>

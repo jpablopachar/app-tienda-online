@@ -26,14 +26,14 @@ const FILE_SIZE_UNITS_LONG: string[] = [
   standalone: true,
 })
 export class FileSizePipe implements PipeTransform {
-  transform(sizeInBytes: number, longForm?: boolean): string {
+  transform(sizeInBytes: number | undefined, longForm?: boolean): string {
     const units: string[] = longForm ? FILE_SIZE_UNITS_LONG : FILE_SIZE_UNITS;
 
-    let power: number = Math.round(Math.log(sizeInBytes) / Math.log(1024));
+    let power: number = Math.round(Math.log(sizeInBytes as number) / Math.log(1024));
 
     power = Math.min(power, units.length - 1);
 
-    const size: number = sizeInBytes / Math.pow(1024, power);
+    const size: number = (sizeInBytes as number) / Math.pow(1024, power);
     const formattedSize: number = Math.round(size * 100) / 100;
     const unit: string = units[power];
 

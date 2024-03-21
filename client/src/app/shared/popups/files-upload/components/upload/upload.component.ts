@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common'
 import {
-  ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   WritableSignal,
@@ -12,7 +11,6 @@ import {
   signal
 } from '@angular/core'
 import { Storage, StorageError, StorageReference, UploadTask, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage'
-import { Observable, Subject, of } from 'rxjs'
 import { FileSizePipe } from '../../pipes'
 
 @Component({
@@ -48,40 +46,34 @@ import { FileSizePipe } from '../../pipes'
     }
 
     .app-a { margin-right: 0; }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UploadComponent implements OnInit, OnDestroy {
+export class UploadComponent implements OnInit {
   @Input() file!: File;
 
   @Output() completed: EventEmitter<string>;
 
-  private _cdr: ChangeDetectorRef;
   private _storage: Storage;
-  private _destroy: Subject<void>;
 
-  public task!: UploadTask;
-  public percentage!: Observable<number>;
-  public snapshot$!: Observable<UploadTaskSnapshot | undefined>;
-
-  public $downloadURL!: WritableSignal<string | null>;
+  public $task: WritableSignal<UploadTask | null>;
+  public $percentage: WritableSignal<number | null>;
+  public $snapshot: WritableSignal<UploadTaskSnapshot | null>;
+  public $downloadURL: WritableSignal<string | null>;
 
   constructor() {
     this.completed = new EventEmitter<string>();
-    this._destroy = new Subject<void>();
 
+    this.$task = signal(null);
+    this.$percentage = signal(null);
+    this.$snapshot = signal(null);
     this.$downloadURL = signal(null);
 
-    this._cdr = inject(ChangeDetectorRef);
     this._storage = inject(Storage);
   }
 
   ngOnInit(): void {
     this._startUpload();
-  }
-
-  ngOnDestroy(): void {
-    this._destroy.next();
-    this._destroy.complete();
   }
 
   private _startUpload(): void {
@@ -90,25 +82,21 @@ export class UploadComponent implements OnInit, OnDestroy {
     }`;
     const storageRef: StorageReference = ref(this._storage, path);
 
-    this.task = uploadBytesResumable(storageRef, this.file);
+    this.$task.set(uploadBytesResumable(storageRef, this.file));
 
-    this.task.on('state_changed', (snapshot: UploadTaskSnapshot): void => {
+    this.$task()?.on('state_changed', (snapshot: UploadTaskSnapshot): void => {
       const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-      this.snapshot$ = of(snapshot);
-      this.percentage = of(progress);
-
-      this._cdr.detectChanges();
+      this.$snapshot.set(snapshot);
+      this.$percentage.set(progress);
     }, (error: StorageError): void => {
       console.error('Se ha producido un error: ', error);
     }, async (): Promise<void> => {
       const url: string = await getDownloadURL(storageRef);
 
       this.$downloadURL.set(url);
-      this._cdr.detectChanges();
 
       this.completed.emit(this.$downloadURL() as string);
-      
     })
   }
 }
