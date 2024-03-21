@@ -69,7 +69,7 @@
             <app-button type="submit">Enviar</app-button>
         </div>
     </form>
-    @if ($loading()) {
+    @if (loading$ | async) {
         <app-spinner></app-spinner>
     }
 </div>

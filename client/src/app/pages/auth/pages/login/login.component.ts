@@ -3,9 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  WritableSignal,
-  inject,
-  signal,
+  inject
 } from '@angular/core'
 import {
   FormBuilder,
@@ -30,6 +28,7 @@ import {
   signInEmailAction,
 } from '@app/store/user'
 import { Store } from '@ngrx/store'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-login',
@@ -80,7 +79,7 @@ import { Store } from '@ngrx/store'
         </div>
       </form>
 
-      @if ($loading()) {
+      @if (loading$ | async) {
         <app-spinner></app-spinner>
       }
     </div>
@@ -93,10 +92,10 @@ import { Store } from '@ngrx/store'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+  public loading$!: Observable<boolean | null>;
+
   public form: FormGroup;
   public regexErrors = regexErrors;
-
-  public $loading: WritableSignal<boolean | null>;
 
   private _formBuilder: FormBuilder;
   private _store: Store<UserState>;
@@ -130,12 +129,11 @@ export class LoginComponent implements OnInit {
         },
       ],
     });
-
-    this.$loading = signal(null);
   }
 
   public ngOnInit(): void {
-    this.$loading.set(this._store.selectSignal(selectGetLoading)());
+    // this.$loading.set(this._store.selectSignal(selectGetLoading)());
+    this.loading$ = this._store.select(selectGetLoading);
   }
 
   public login(): void {

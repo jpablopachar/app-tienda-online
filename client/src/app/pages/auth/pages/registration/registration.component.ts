@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  WritableSignal,
-  inject,
-  signal,
+  inject
 } from '@angular/core'
 import {
   FormBuilder,
@@ -29,6 +27,7 @@ import {
   signUpEmailAction,
 } from '@app/store/user'
 import { Store } from '@ngrx/store'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-registration',
@@ -64,10 +63,10 @@ import { Store } from '@ngrx/store'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
+  public loading$!: Observable<boolean | null>;
+
   public form!: FormGroup;
   public regexErrors = regexErrors;
-
-  public $loading: WritableSignal<boolean | null>;
 
   private _formBuilder: FormBuilder;
   private _store: Store<UserState>;
@@ -137,12 +136,10 @@ export class RegistrationComponent {
       },
       { validator: this._repeatPasswordValidator }
     );
-
-    this.$loading = signal(null);
   }
 
   public ngOnInit(): void {
-    this.$loading.set(this._store.selectSignal(selectGetLoading)());
+    this.loading$ = this._store.select(selectGetLoading);
   }
 
   public register(): void {
