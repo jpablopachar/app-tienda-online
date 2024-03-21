@@ -4,7 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
+  Output
 } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { User } from '@app/models/server'
